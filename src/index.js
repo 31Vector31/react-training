@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import ContactsList from './ContactsList/ContactsList';
 import Reviews from './Reviews/Reviews';
 import GuestList from './GuestList/GuestList';
+import AdminPanel from './AdminPanel/AdminPanel';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <GuestList />
+    <AdminPanel />
   </React.StrictMode>,
   document.getElementById('root')
 );
