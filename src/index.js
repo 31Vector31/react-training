@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ContactsList from './ContactsList/ContactsList';
 import Reviews from './Reviews/Reviews';
+import GuestList from './GuestList/GuestList';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Reviews />
+    <GuestList />
   </React.StrictMode>,
   document.getElementById('root')
 );
