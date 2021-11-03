@@ -29,13 +29,15 @@ function ContactsList() {
         name: "Алиса",
         lastMessage: "Привет",
         avatar: "https://cdn.icon-icons.com/icons2/1161/PNG/512/1487716857-user_81635.png",
-        isOnline: true
+        isOnline: true,
+        authorLastMessage: ""
     },
         {
             name: "Витя",
             lastMessage: "kak dela",
             avatar: "https://cdn.icon-icons.com/icons2/1161/PNG/512/1487716857-user_81635.png",
-            isOnline: false
+            isOnline: false,
+            authorLastMessage: "Витя"
         }];
     const contacts = users.map((user, index) =>
         <Contact user={user} key={index}/>
