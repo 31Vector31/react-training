@@ -16,23 +16,24 @@ class Form extends React.Component {
     }
 
     saveGuest = () => {
-        let {name, sex} = this.state;
+        let {name, sex, age} = this.state;
         if (name.trim() == "" || sex == "Выберите") return;
         this.setState({name: "", sex: "Выберите", age: 1});
-        return this.props.saveGuest(this.state);
+        this.props.saveGuest({name, sex, age});
     }
 
     render() {
+        const {name, sex, age} = this.state;
         return (
             <div className={styles.form}>
                 <div>
                     <div>
                         Имя:<br/>
-                        <input type="text" onChange={this.changeValue("name")} value={this.state.name}/>
+                        <input type="text" onChange={this.changeValue("name")} value={name}/>
                     </div>
                     <div>
                         Пол:<br/>
-                        <select onChange={this.changeValue("sex")} value={this.state.sex}>
+                        <select onChange={this.changeValue("sex")} value={sex}>
                             <option disabled value="Выберите">Выберите</option>
                             <option value="Мужчина">Мужчина</option>
                             <option value="Женщина">Женщина</option>
@@ -40,7 +41,7 @@ class Form extends React.Component {
                     </div>
                     <div>
                         Возраст:<br/>
-                        <input min="1" type="number" onChange={this.changeValue("age")} value={this.state.age}/>
+                        <input min="1" type="number" onChange={this.changeValue("age")} value={age}/>
                     </div>
                 </div>
                 <button onClick={this.saveGuest}>Добавить</button>
