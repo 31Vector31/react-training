@@ -1,29 +1,52 @@
 import React from 'react';
 import styles from "./Form.module.css";
 
-function Form(props) {
-    return (
-        <div className={styles.form}>
-            <div>
+class Form extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: "",
+            sex: "Выберите",
+            age: 1
+        };
+    }
+
+    changeValue = (state) => event => {
+        this.setState({[state]: event.target.value});
+    }
+
+    saveGuest = () => {
+        let {name, sex} = this.state;
+        if (name.trim() == "" || sex == "Выберите") return;
+        this.setState({name: "", sex: "Выберите", age: 1});
+        return this.props.saveGuest(this.state);
+    }
+
+    render() {
+        return (
+            <div className={styles.form}>
                 <div>
-                    Имя:<br/>
-                    <input type="text" onChange={props.changeName} value={props.name}/>
+                    <div>
+                        Имя:<br/>
+                        <input type="text" onChange={this.changeValue("name")} value={this.state.name}/>
+                    </div>
+                    <div>
+                        Пол:<br/>
+                        <select onChange={this.changeValue("sex")} value={this.state.sex}>
+                            <option disabled value="Выберите">Выберите</option>
+                            <option value="Мужчина">Мужчина</option>
+                            <option value="Женщина">Женщина</option>
+                        </select>
+                    </div>
+                    <div>
+                        Возраст:<br/>
+                        <input min="1" type="number" onChange={this.changeValue("age")} value={this.state.age}/>
+                    </div>
                 </div>
-                <div>
-                    Пол:<br/>
-                    <select onChange={props.changeSex} value={props.sex}>
-                        <option value="Мужчина">Мужчина</option>
-                        <option value="Женщина">Женщина</option>
-                    </select>
-                </div>
-                <div>
-                    Возраст:<br/>
-                    <input type="number" onChange={props.changeAge} value={props.age}/>
-                </div>
+                <button onClick={this.saveGuest}>Добавить</button>
             </div>
-            <button onClick={props.saveGuest}>Добавить</button>
-        </div>
-    );
+        );
+    }
 }
 
 export default Form;

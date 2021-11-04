@@ -6,54 +6,27 @@ class GuestList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            c: "",
-            sex: "Мужчина",
-            age: 0,
             guests: []
         };
     }
 
-    saveGuest = (event) => {
-        let guests = this.state.guests;
-        guests.push({
-            name: this.state.name,
-            sex: this.state.sex,
-            age: this.state.age,
-            isCome: false
-        });
-        this.setState({guests: guests, name: "", sex: "Мужчина", age: 0});
+    saveGuest = (guest) => {
+        let guests = this.state.guests.concat({...guest, isCome: false, id: this.state.guests.length});
+        this.setState({guests});
     };
 
-    guestCame = (index) => {
-        let guests = this.state.guests;
-        guests[index].isCome = true;
-        this.setState({guests: guests});
-    }
-
-    changeName = (event) => {
-        this.setState({name: event.target.value});
-    }
-
-    changeSex = (event) => {
-        this.setState({sex: event.target.value});
-    }
-
-    changeAge = (event) => {
-        this.setState({age: event.target.value});
+    guestCame = (id) => {
+        let guests = this.state.guests.map((guest) => {
+            if (guest.id === id) return {...guest, isCome: true};
+            return guest;
+        });
+        this.setState({guests});
     }
 
     render() {
         return (
             <div>
-                <Form
-                    saveGuest={this.saveGuest}
-                    name={this.state.name}
-                    sex={this.state.sex}
-                    age={this.state.age}
-                    changeName={this.changeName}
-                    changeSex={this.changeSex}
-                    changeAge={this.changeAge}
-                />
+                <Form saveGuest={this.saveGuest}/>
                 <Table
                     guests={this.state.guests}
                     guestCame={this.guestCame}

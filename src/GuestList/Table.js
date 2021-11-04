@@ -1,9 +1,9 @@
 import RowTable from './RowTable';
 
 function Table(props) {
-    const guests = props.guests;
-    const rows = guests.sort((a, b) => b.isCome - a.isCome || (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)).map((guest, index) =>
-        <RowTable guest={guest} guestCame={props.guestCame} index={index} key={index}/>
+    const guests = props.guests.slice();
+    const rows = guests.sort((a, b) => a.isCome - b.isCome || (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)).map((guest) =>
+        <RowTable guest={guest} guestCame={() => props.guestCame(guest.id)} key={guest.id}/>
     );
     return (
         <table align="center" border="1">
