@@ -5,34 +5,38 @@ class Form extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 0,
-            reset: false
+            value: 1
         };
     }
 
-    changeValue = (event) => {
-        this.setState({value: Number(event.target.value), reset: false});
+    saveReview = () => {
+        this.setState({value: 1});
+        this.props.saveReview(this.state.value);
     }
 
-    saveReview = () => {
-        this.setState({reset: true, value: 0});
-        return this.props.saveReview(this.state.value);
+    changeValue = (value) => {
+        this.setState({value});
     }
 
     render() {
+        const stars = [5, 4, 3, 2, 1].map((n, index) =>
+            <React.Fragment key={index}>
+                <input
+                    checked={n === this.state.value}
+                    onClick={() => this.changeValue(n)}
+                    type="radio"
+                    id={"star-" + n}
+                    name="rating"
+                    value={n}/>
+                <label htmlFor={"star-" + n}/>
+            </React.Fragment>
+        );
         return (
-            <div onChange={this.changeValue} className={styles.rating}>
-                <input type="radio" id="star-5" name="rating" value="5"/>
-                <label for="star-5"/>
-                <input type="radio" id="star-4" name="rating" value="4"/>
-                <label for="star-4"/>
-                <input type="radio" id="star-3" name="rating" value="3"/>
-                <label for="star-3"/>
-                <input type="radio" id="star-2" name="rating" value="2"/>
-                <label for="star-2"/>
-                <input type="radio" id="star-1" name="rating" value="1"/>
-                <label for="star-1"/>
-                <input checked={this.state.reset} type="radio" id="star-0" name="rating" value="0"/>
+            <div className={styles.container}>
+                Оставьте отзыв:
+                <div className={styles.rating}>
+                    {stars}
+                </div>
                 <button onClick={this.saveReview}>Сохранить</button>
             </div>
         );

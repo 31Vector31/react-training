@@ -11,9 +11,8 @@ class Reviews extends React.Component {
     }
 
     saveReview = (review) => {
-        if (review === 0) return;
         let reviews = this.state.reviews.concat(review);
-        this.setState({reviews: reviews});
+        this.setState({reviews});
     }
 
     render() {
