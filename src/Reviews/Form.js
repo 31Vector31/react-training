@@ -26,8 +26,7 @@ class Form extends React.Component {
                     onClick={() => this.changeValue(n)}
                     type="radio"
                     id={"star-" + n}
-                    name="rating"
-                    value={n}/>
+                    name="rating"/>
                 <label htmlFor={"star-" + n}/>
             </React.Fragment>
         );
