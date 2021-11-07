@@ -1,5 +1,5 @@
-function RowTable(props) {
-    const {username, department, creationDate, updateDate} = props.user;
+function RowTable({user, editUser, deleteUser}) {
+    const {username, department, creationDate, updateDate} = user;
     return (
         <tr>
             <td>{username}</td>
@@ -7,10 +7,10 @@ function RowTable(props) {
             <td>{creationDate}</td>
             <td>{updateDate}</td>
             <td>
-                <button onClick={() => props.editUser(props.index)}>Редактировать</button>
+                <button onClick={editUser}>Редактировать</button>
             </td>
             <td>
-                <button onClick={() => props.deleteUser(props.index)}>Удалить</button>
+                <button onClick={deleteUser}>Удалить</button>
             </td>
         </tr>
     );

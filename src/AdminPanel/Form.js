@@ -1,23 +1,59 @@
 import React from 'react';
 import styles from "./Form.module.css";
 
-function Form(props) {
-    return (
-        <div className={styles.form}>
-            <input value={props.username} onChange={props.changeUsername} className={styles.username}/>
-            <select value={props.department} onChange={props.changeDepartment} className={styles.department}>
-                <option value="Разработка">Разработка</option>
-                <option value="Бухгалтерия">Бухгалтерия</option>
-                <option value="Менеджмент">Менеджмент</option>
-            </select>
-            <button onClick={props.saveUser} className={styles.save}>Сохранить</button>
-            <div>
-                Поиск по имени:
-                <input value={props.search} onChange={props.changeSearch}/>
-                <button onClick={props.findUser}>Найти</button>
+class Form extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: "",
+            department: "",
+        };
+    }
+
+    componentDidUpdate(prevProps) {
+        const {idEditElement: prevIdEditElement} = prevProps;
+        const {idEditElement, username, department} = this.props;
+        if (prevIdEditElement !== idEditElement) {
+            this.setState({
+                username: username || "",
+                department: department || ""
+            });
+        }
+    }
+
+    changeValue = (state) => event => {
+        this.setState({[state]: event.target.value});
+    }
+
+    saveUser = () => {
+        let {username, department} = this.state;
+        username = username.trim();
+        if (username === "" || department === "") return;
+        this.setState({
+            username: "",
+            department: ""
+        });
+        this.props.saveUser(username, department);
+    }
+
+    render() {
+        const {username, department} = this.state;
+        const {idEditElement} = this.props;
+        return (
+            <div className={styles.form}>
+                <div>{idEditElement ? "Редактировать пользователя:" : "Создать пользователя:"}</div>
+                <input value={username} onChange={this.changeValue("username")}/>
+                <select value={department} onChange={this.changeValue("department")}>
+                    <option disabled value="">Выберите</option>
+                    <option value="Разработка">Разработка</option>
+                    <option value="Бухгалтерия">Бухгалтерия</option>
+                    <option value="Менеджмент">Менеджмент</option>
+                </select>
+                <button onClick={this.saveUser}>Сохранить</button>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default Form;
+

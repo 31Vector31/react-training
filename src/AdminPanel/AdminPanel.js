@@ -8,11 +8,8 @@ class AdminPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
-            department: "Разработка",
             users: [],
-            indexEditElement: null,
-            search: "",
+            idEditElement: null,
         };
     }
 
@@ -38,84 +35,69 @@ class AdminPanel extends React.Component {
         }
     }
 
-    saveUser = () => {
-        let users = this.state.users;
+    saveUser = (username, department) => {
+        const {users, idEditElement} = this.state;
         let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
-        let indexEditElement = this.state.indexEditElement;
-        let username = this.state.username;
-        let department = this.state.department;
-
-        if (indexEditElement !== null) {
-            users[indexEditElement].username = username;
-            users[indexEditElement].department = department;
-            users[indexEditElement].updateDate = currentDate;
-            this.setState({indexEditElement: null});
+        let newUsers = [];
+        if (idEditElement !== null) {
+            newUsers = users.map(user => {
+                if (user.id === idEditElement) {
+                    const {id, creationDate} = user;
+                    return {
+                        username,
+                        department,
+                        updateDate: currentDate,
+                        creationDate,
+                        id
+                    };
+                }
+                return user;
+            });
         } else {
             let user = {
                 username: username,
                 department: department,
                 creationDate: currentDate,
-                updateDate: currentDate
+                updateDate: currentDate,
+                id: users.length > 0 ? users[users.length - 1].id + 1 : 1
             };
-            users.push(user);
+            newUsers = users.concat(user);
         }
-
-        this.setState({users: users, username: "", department: "Разработка"});
-        this.localStorageSetItem(localStorageKey, users);
+        this.setState({users: newUsers, idEditElement: null});
+        this.localStorageSetItem(localStorageKey, newUsers);
     }
 
-    changeUsername = (event) => {
-        this.setState({username: event.target.value});
+    deleteUser = (id, username) => {
+        const {users, idEditElement} = this.state;
+        if (!window.confirm(`Вы уверенны, что хотите удалить пользователя ${username}?`)) return;
+        let newUsers = users.filter(user => user.id !== id);
+        if (idEditElement === id) this.setState({idEditElement: null, users: newUsers});
+        else this.setState({users: newUsers});
+        this.localStorageSetItem(localStorageKey, newUsers);
     }
 
-    changeDepartment = (event) => {
-        this.setState({department: event.target.value});
-    }
-
-    changeSearch = (event) => {
-        this.setState({search: event.target.value});
-    }
-
-    deleteUser = (index) => {
-        let users = this.state.users;
-        if (!window.confirm(`Вы уверенны, что хотите удалить пользователя ${users[index].username}?`)) {
-            return;
-        }
-        if (this.state.indexEditElement === index) {
-            this.setState({username: "", department: "Разработка", indexEditElement: null});
-        }
-        users.splice(index, 1);
-        this.setState({users: users});
-        this.localStorageSetItem(localStorageKey, users);
-    }
-
-    editUser = (index) => {
-        let users = this.state.users;
-        this.setState({username: users[index].username, department: users[index].department, indexEditElement: index});
-    }
-
-    findUser = () => {
-        let users = this.state.users;
-        users = users.filter(user => user.username == this.state.search);
-        this.setState({users: users});
+    editUser = (idEditElement) => {
+        this.setState({idEditElement});
     }
 
     render() {
+        const {users, idEditElement} = this.state;
+        let user = {};
+        if (idEditElement != null) user = users.find(user => user.id === idEditElement);
+        const {username, department} = user;
         return (
             <div>
                 <Form
-                    username={this.state.username}
-                    department={this.state.department}
-                    search={this.state.search}
+                    idEditElement={idEditElement}
+                    username={username}
+                    department={department}
                     saveUser={this.saveUser}
-                    findUser={this.findUser}
-                    changeUsername={this.changeUsername}
-                    changeDepartment={this.changeDepartment}
-                    changeSearch={this.changeSearch}/>
+                />
                 <Table
-                    users={this.state.users}
+                    users={users}
                     deleteUser={this.deleteUser}
-                    editUser={this.editUser}/>
+                    editUser={this.editUser}
+                />
             </div>
         );
     }
