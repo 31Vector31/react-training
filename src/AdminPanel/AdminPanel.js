@@ -35,6 +35,11 @@ class AdminPanel extends React.Component {
         }
     }
 
+    updateUsers(users) {
+        this.setState({users, idEditElement: null});
+        this.localStorageSetItem(localStorageKey, users);
+    }
+
     saveUser = (username, department) => {
         const {users, idEditElement} = this.state;
         let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
@@ -55,25 +60,22 @@ class AdminPanel extends React.Component {
             });
         } else {
             let user = {
-                username: username,
-                department: department,
+                username,
+                department,
                 creationDate: currentDate,
                 updateDate: currentDate,
                 id: users.length > 0 ? users[users.length - 1].id + 1 : 1
             };
             newUsers = users.concat(user);
         }
-        this.setState({users: newUsers, idEditElement: null});
-        this.localStorageSetItem(localStorageKey, newUsers);
+        this.updateUsers(newUsers);
     }
 
     deleteUser = (id, username) => {
-        const {users, idEditElement} = this.state;
+        const {users} = this.state;
         if (!window.confirm(`Вы уверенны, что хотите удалить пользователя ${username}?`)) return;
         let newUsers = users.filter(user => user.id !== id);
-        if (idEditElement === id) this.setState({idEditElement: null, users: newUsers});
-        else this.setState({users: newUsers});
-        this.localStorageSetItem(localStorageKey, newUsers);
+        this.updateUsers(newUsers);
     }
 
     editUser = (idEditElement) => {
