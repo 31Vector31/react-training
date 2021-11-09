@@ -15,8 +15,9 @@ class Table extends React.Component {
 
     render() {
         const {search} = this.state;
+        const searchLowerCase = search.toLowerCase();
         const {users, editUser, deleteUser} = this.props;
-        const rows = users.filter(user => user.username.toLowerCase().includes(search.toLowerCase())).map(user => {
+        const rows = users.filter(user => user.username.toLowerCase().includes(searchLowerCase)).map(user => {
             const {username, id} = user;
             return <RowTable
                 editUser={() => editUser(id)}
