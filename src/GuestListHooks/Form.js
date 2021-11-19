@@ -7,11 +7,12 @@ function Form(props) {
     const [age, setAge] = useState(null);
 
     const saveGuest = () => {
-        if (String(name).trim() === "" || sex == null) return;
+        let verifiedName = name ? name.trim() : "";
+        if (verifiedName === "" || sex == null) return;
         setName(null);
         setSex(null);
         setAge(null);
-        props.saveGuest({name, sex, age});
+        props.saveGuest({name: verifiedName, sex, age});
     }
 
     return (
