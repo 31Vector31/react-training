@@ -6,19 +6,16 @@ function GuestList() {
     const [guests, setGuests] = useState([]);
 
     const saveGuest = useCallback((guest) => {
-            setGuests(guests.concat({...guest, isCome: false, id: guests.length}));
-        },
-        [guests]
+            setGuests((guests) => [...guests, {...guest, isCome: false, id: guests.length}]);
+        }
     );
 
     const guestCame = useCallback((id) => {
-            const NewGuests = guests.map((guest) => {
+            setGuests((guests) => guests.map((guest) => {
                 if (guest.id === id) return {...guest, isCome: true};
                 return guest;
-            });
-            setGuests(NewGuests);
-        },
-        [guests]
+            }));
+        }
     );
 
     return (
