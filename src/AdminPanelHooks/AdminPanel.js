@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import Table from './Table';
 import Form from './Form';
 
 const localStorageKey = "users";
 
 function AdminPanel() {
-    const localStorageGetItem = (key) => {
+    const localStorageGetItem = () => {
         try {
-            let value = JSON.parse(localStorage.getItem(key) || "[]");
+            let value = JSON.parse(localStorage.getItem(localStorageKey) || "[]");
             return Array.isArray(value) ? value : [];
         } catch (e) {
             alert(e);
@@ -15,24 +15,24 @@ function AdminPanel() {
         }
     }
 
-    const localStorageSetItem = (key, value) => {
+    const localStorageSetItem = (value) => {
         try {
-            localStorage.setItem(key, JSON.stringify(value));
+            localStorage.setItem(localStorageKey, JSON.stringify(value));
         } catch (e) {
             alert(e);
         }
     }
 
-    const [users, setUsers] = useState(() => localStorageGetItem(localStorageKey));
+    const [users, setUsers] = useState(() => localStorageGetItem());
     const [idEditElement, setIdEditElement] = useState(null);
 
     const updateUsers = (users) => {
         setUsers(users);
         setIdEditElement(null);
-        localStorageSetItem(localStorageKey, users);
+        localStorageSetItem(users);
     }
 
-    const saveUser = (username, department) => {
+    const saveUser = useCallback((username, department) => {
         let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
         let newUsers = [];
         if (idEditElement !== null) {
@@ -57,20 +57,22 @@ function AdminPanel() {
                 updateDate: currentDate,
                 id: users.length > 0 ? users[users.length - 1].id + 1 : 1
             };
-            newUsers = users.concat(user);
+            newUsers = [...users, user];
         }
         updateUsers(newUsers);
-    }
+    });
 
-    const deleteUser = (id, username) => {
-        if (!window.confirm(`Вы уверенны, что хотите удалить пользователя ${username}?`)) return;
-        let newUsers = users.filter(user => user.id !== id);
-        updateUsers(newUsers);
-    }
+    const deleteUser = useCallback((id, username) => {
+            if (!window.confirm(`Вы уверенны, что хотите удалить пользователя ${username}?`)) return;
+            let newUsers = users.filter(user => user.id !== id);
+            updateUsers(newUsers);
+        }
+    );
 
-    const editUser = (idEditElement) => {
-        setIdEditElement(idEditElement);
-    }
+    const editUser = useCallback((id) => {
+            setIdEditElement(id);
+        }
+    );
 
     let user = {};
     if (idEditElement != null) user = users.find(user => user.id === idEditElement);
@@ -78,7 +80,6 @@ function AdminPanel() {
     return (
         <div>
             <Form
-                idEditElement={idEditElement}
                 username={username}
                 department={department}
                 saveUser={saveUser}

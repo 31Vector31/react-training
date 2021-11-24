@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import RowTable from './RowTable';
 
 function Table({users, editUser, deleteUser}) {
@@ -8,7 +8,7 @@ function Table({users, editUser, deleteUser}) {
         setSearch(event.target.value);
     }
 
-    const searchLowerCase = search ? search.trim().toLowerCase() : "";
+    const searchLowerCase = useMemo(() => search ? search.trim().toLowerCase() : "", [search]);
     const rows = users.filter(user => user.username.toLowerCase().includes(searchLowerCase)).map(user => {
         const {username, id} = user;
         return <RowTable
@@ -41,7 +41,6 @@ function Table({users, editUser, deleteUser}) {
             </table>
         </div>
     );
-
 }
 
 export default Table;
