@@ -23,7 +23,7 @@ function AdminPanel() {
         }
     }
 
-    const [users, setUsers] = useState(() => localStorageGetItem());
+    const [users, setUsers] = useState(localStorageGetItem());
     const [idEditElement, setIdEditElement] = useState(null);
 
     const updateUsers = (users) => {
@@ -33,45 +33,43 @@ function AdminPanel() {
     }
 
     const saveUser = useCallback((username, department) => {
-        let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
-        let newUsers = [];
-        if (idEditElement !== null) {
-            newUsers = users.map(user => {
-                if (user.id === idEditElement) {
-                    const {id, creationDate} = user;
-                    return {
-                        username,
-                        department,
-                        updateDate: currentDate,
-                        creationDate,
-                        id
-                    };
-                }
-                return user;
-            });
-        } else {
-            let user = {
-                username,
-                department,
-                creationDate: currentDate,
-                updateDate: currentDate,
-                id: users.length > 0 ? users[users.length - 1].id + 1 : 1
-            };
-            newUsers = [...users, user];
-        }
-        updateUsers(newUsers);
-    });
+            let currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
+            let newUsers = [];
+            if (idEditElement !== null) {
+                newUsers = users.map(user => {
+                    if (user.id === idEditElement) {
+                        const {id, creationDate} = user;
+                        return {
+                            username,
+                            department,
+                            updateDate: currentDate,
+                            creationDate,
+                            id
+                        };
+                    }
+                    return user;
+                });
+            } else {
+                let user = {
+                    username,
+                    department,
+                    creationDate: currentDate,
+                    updateDate: currentDate,
+                    id: users.length > 0 ? users[users.length - 1].id + 1 : 1
+                };
+                newUsers = [...users, user];
+            }
+            updateUsers(newUsers);
+        },
+        [users, idEditElement]
+    );
 
     const deleteUser = useCallback((id, username) => {
             if (!window.confirm(`Вы уверенны, что хотите удалить пользователя ${username}?`)) return;
             let newUsers = users.filter(user => user.id !== id);
             updateUsers(newUsers);
-        }
-    );
-
-    const editUser = useCallback((id) => {
-            setIdEditElement(id);
-        }
+        },
+        [users]
     );
 
     let user = {};
@@ -87,7 +85,7 @@ function AdminPanel() {
             <Table
                 users={users}
                 deleteUser={deleteUser}
-                editUser={editUser}
+                editUser={setIdEditElement}
             />
         </div>
     );

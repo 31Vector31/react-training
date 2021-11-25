@@ -9,7 +9,7 @@ function Form({saveUser, username: usernameProps, department: departmentProps}) 
     useEffect(() => {
         setUsername(usernameProps || "");
         setDepartment(departmentProps || "");
-    }, [usernameProps]);
+    }, [usernameProps, departmentProps]);
 
     const saveUserClick = () => {
         const verifiedUsername = username ? username.trim() : "";
