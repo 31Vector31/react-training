@@ -23,7 +23,7 @@ function AdminPanel() {
         }
     }
 
-    const [users, setUsers] = useState(localStorageGetItem());
+    const [users, setUsers] = useState(localStorageGetItem);
     const [idEditElement, setIdEditElement] = useState(null);
 
     const updateUsers = (users) => {
@@ -72,9 +72,7 @@ function AdminPanel() {
         [users]
     );
 
-    let user = {};
-    if (idEditElement != null) user = users.find(user => user.id === idEditElement);
-    const {username, department} = user;
+    const {username, department} = users.find(user => user.id === idEditElement) || {};
     return (
         <div>
             <Form
