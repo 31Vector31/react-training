@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ContactsList from './ContactsList/ContactsList';
 import Reviews from './Reviews/Reviews';
-import GuestList from './GuestList/GuestList';
-import AdminPanel from './AdminPanel/AdminPanel';
+import GuestList from './GuestListHooks/GuestList';
+import AdminPanel from './AdminPanelHooks/AdminPanel';
+import PictureGallery from './PictureGallery/PictureGallery';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AdminPanel />
+    <PictureGallery />
   </React.StrictMode>,
   document.getElementById('root')
 );
