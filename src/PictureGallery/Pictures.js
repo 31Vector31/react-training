@@ -1,20 +1,21 @@
-import React, {useState} from 'react';
-import {Grid} from '@mui/material';
+import React, {useState, useCallback} from 'react';
+import {Box, Button, Grid} from '@mui/material';
 import Popup from './Popup';
 import styles from "./Pictures.module.css";
 
-function Pictures({pictures}) {
+function Pictures({pictures, editPage}) {
     const [indexSelectedPicture, setIndexSelectedPicture] = useState(null);
 
-    const forward = () => {
+    const forward = useCallback(() => {
         if (indexSelectedPicture === pictures.length - 1) return;
         setIndexSelectedPicture(prevIndex => prevIndex + 1);
-    }
+    });
 
-    const back = () => {
+    const back = useCallback(() => {
         if (indexSelectedPicture === 0) return;
         setIndexSelectedPicture(prevIndex => prevIndex - 1);
-    }
+    });
+
     return (
         <div className={styles.pictures}>
             <Grid container spacing={2}>
@@ -31,7 +32,13 @@ function Pictures({pictures}) {
                         </Grid>);
                 })}
             </Grid>
-
+            <Box textAlign='center'>
+                <Button
+                    variant="contained"
+                    onClick={() => editPage()}>
+                    Загрузить еще
+                </Button>
+            </Box>
             {indexSelectedPicture !== null &&
                 <Popup
                     picture={pictures[indexSelectedPicture]}

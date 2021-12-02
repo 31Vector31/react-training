@@ -1,7 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import Pictures from './Pictures';
 import Search from './Search';
-import {Box, Button} from "@mui/material";
 
 function PictureGallery() {
     const [pictures, setPictures] = useState([]);
@@ -19,16 +18,10 @@ function PictureGallery() {
                 editPage={editPage}
             />
             {pictures.length !== 0 &&
-                <div>
-                    <Pictures pictures={pictures}/>
-                    <Box textAlign='center'>
-                        <Button
-                            variant="contained"
-                            onClick={() => editPage()}>
-                            Загрузить еще
-                        </Button>
-                    </Box>
-                </div>}
+                <Pictures
+                    pictures={pictures}
+                    editPage={editPage}
+                />}
         </div>
     );
 }
