@@ -5,11 +5,12 @@ import Reviews from './Reviews/Reviews';
 import GuestList from './GuestListHooks/GuestList';
 import AdminPanel from './AdminPanelHooks/AdminPanel';
 import PictureGallery from './PictureGallery/PictureGallery';
+import PhoneBook from './PhoneBook/PhoneBook';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <PictureGallery />
+    <PhoneBook />
   </React.StrictMode>,
   document.getElementById('root')
 );
