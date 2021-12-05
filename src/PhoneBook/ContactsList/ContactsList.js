@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
-import PopupForm from './PopupForm';
+import PopupForm from '../PopupForm/PopupForm';
 import {Button, Paper} from '@mui/material';
 import styles from "./ContactsList.module.css";
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import ReactDOM from "react-dom";
-import PopupForm from "./PopupForm";
-import PopupConfirm from "./PopupConfirm";
+import PopupForm from "../PopupForm/PopupForm";
+import PopupConfirm from "../PopupConfirm/PopupConfirm";
 import {Button, IconButton} from '@mui/material';
 import {ArrowBack, Phone, Edit, Delete} from '@mui/icons-material';
 import styles from "./ContactInfo.module.css";

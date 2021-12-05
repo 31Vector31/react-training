@@ -1,8 +1,9 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import ContactsList from './ContactsList';
-import ContactInfo from './ContactInfo';
-import {createContact, readContacts, deleteContact, updateContact} from './APIRequests';
+import ContactsList from '../ContactsList/ContactsList';
+import ContactInfo from '../ContactInfo/ContactInfo';
+import {createContact, readContacts, deleteContact, updateContact} from '../APIRequests';
 import styles from "./PhoneBook.module.css";
+import '../Main.css';
 
 function PhoneBook() {
     const [contacts, setContacts] = useState([]);
