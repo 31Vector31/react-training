@@ -16,6 +16,10 @@
     align-items: flex-end;
 }
 
+.image {
+    background-color: black;
+}
+
 .content {
     display: flex;
     flex-direction: row;

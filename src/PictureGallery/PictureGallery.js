@@ -6,13 +6,12 @@ import {getPictures} from './ApiRequests';
 function PictureGallery() {
     const [pictures, setPictures] = useState([]);
     const [search, setSearch] = useState(null);
-    const [page, setPage] = useState(null);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
-        if (search !== null || page !== null)
-            getPictures(search, page).then(pictures => {
-                setPictures((prevPictures) => [...prevPictures, ...pictures]);
-            });
+        getPictures(search, page).then(pictures => {
+            setPictures((prevPictures) => [...prevPictures, ...pictures]);
+        });
     }, [search, page]);
 
     const increasePage = useCallback(() => {
@@ -21,7 +20,7 @@ function PictureGallery() {
 
     const handleSearch = useCallback((value) => {
         setPictures([]);
-        setPage(null);
+        setPage(1);
         setSearch(value);
     }, []);
 

@@ -16,7 +16,7 @@ function Popup({picture, hide, back, forward}) {
                     <IconButton onClick={back}>
                         <ArrowBackIosNew sx={{color: grey[50]}}/>
                     </IconButton>
-                    <img src={webformatURL} alt={tags}/>
+                    <img className={styles.image} src={webformatURL} alt={tags}/>
                     <IconButton onClick={forward}>
                         <ArrowForwardIos sx={{color: grey[50]}}/>
                     </IconButton>

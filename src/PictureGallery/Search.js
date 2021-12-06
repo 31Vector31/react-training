@@ -9,6 +9,7 @@ function Search({handleSearch}) {
     }
 
     useEffect(() => {
+        if (value === null) return;
         const timer = setTimeout(() => {
             handleSearch(value);
         }, 500);

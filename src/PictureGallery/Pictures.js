@@ -28,7 +28,8 @@ function Pictures({pictures, increasePage}) {
                             container
                             justifyContent="center"
                             alignItems="center">
-                            <img onClick={() => setIndexSelectedPicture(index)} src={previewURL} alt={tags}/>
+                            <img width="150" height="150" onClick={() => setIndexSelectedPicture(index)}
+                                 src={previewURL} alt={tags}/>
                         </Grid>);
                 })}
             </Grid>
