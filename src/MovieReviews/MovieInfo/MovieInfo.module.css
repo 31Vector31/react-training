@@ -1,0 +1,12 @@
+.info {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.info > * {
+    margin: 10px;
+}
+
+.item {
+    margin: 10px;
+}

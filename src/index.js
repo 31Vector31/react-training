@@ -6,11 +6,12 @@ import GuestList from './GuestListHooks/GuestList';
 import AdminPanel from './AdminPanelHooks/AdminPanel';
 import PictureGallery from './PictureGallery/PictureGallery';
 import PhoneBook from './PhoneBook/PhoneBook/PhoneBook';
+import MovieReviews from './MovieReviews/Router/Reviews';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <PhoneBook />
+    <MovieReviews />
   </React.StrictMode>,
   document.getElementById('root')
 );

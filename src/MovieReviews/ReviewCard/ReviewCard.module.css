@@ -1,0 +1,13 @@
+.review {
+    margin-bottom: 15px;
+}
+
+.user {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.username {
+    margin: 5px;
+}
