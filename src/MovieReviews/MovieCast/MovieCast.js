@@ -15,7 +15,6 @@ function MovieCast() {
 
     return (
         <div>
-            <h2>Cast</h2>
             <Grid container spacing={2}>
                 {cast.map((actor, index) =>
                     <Grid

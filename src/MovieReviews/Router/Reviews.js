@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom";
 import MoviesList from "../MoviesList/MoviesList";
 import MovieInfo from "../MovieInfo/MovieInfo";
 import MovieCast from "../MovieCast/MovieCast";
@@ -10,10 +10,11 @@ function Reviews() {
         <div className={styles.container}>
             <BrowserRouter>
                 <Routes>
-                    <Route exact path="/" element={<MoviesList/>}/>
-                    <Route exact path="/movies/:id" element={<MovieInfo/>}/>
-                    <Route path="/movies/:id/cast" element={<MovieCast/>}/>
-                    <Route path="/movies/:id/review" element={<MovieReviews/>}/>
+                    <Route path="/" element={<MoviesList/>}/>
+                    <Route path="/movies/:id" element={<><MovieInfo/><Outlet/></>}>
+                        <Route path="cast" element={<MovieCast/>}/>
+                        <Route path="review" element={<MovieReviews/>}/>
+                    </Route>
                     <Route path="*" element={<Navigate to="/"/>}/>
                 </Routes>
             </BrowserRouter>

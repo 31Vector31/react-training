@@ -14,7 +14,6 @@ function MovieReviews() {
 
     return (
         <div>
-            <h2>Review</h2>
             {reviews.map((review, index) =>
                 <ReviewCard review={review} key={index}/>
             )}

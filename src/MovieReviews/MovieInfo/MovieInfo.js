@@ -99,16 +99,22 @@ function MovieInfo() {
                         </div>
                     </div>
                     <div>
-                        <h3 className={styles.item}>
-                            <NavLink to={`/movies/${id}/cast`}>
-                                Cast
-                            </NavLink>
-                        </h3>
-                        <h3 className={styles.item}>
-                            <NavLink to={`/movies/${id}/review`}>
-                                Reviews
-                            </NavLink>
-                        </h3>
+                        <div className={styles.navigation}>
+                            <div className={styles.item}>
+                                <h3>
+                                    <NavLink to={`/movies/${id}/cast`}>
+                                        Cast
+                                    </NavLink>
+                                </h3>
+                            </div>
+                            <div className={styles.item}>
+                                <h3>
+                                    <NavLink to={`/movies/${id}/review`}>
+                                        Reviews
+                                    </NavLink>
+                                </h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
             }
