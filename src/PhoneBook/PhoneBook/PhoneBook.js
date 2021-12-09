@@ -1,9 +1,8 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useMemo} from 'react';
 import ContactsList from '../ContactsList/ContactsList';
 import ContactInfo from '../ContactInfo/ContactInfo';
 import {createContact, readContacts, deleteContact, updateContact} from '../APIRequests';
 import styles from "./PhoneBook.module.css";
-import ReactDOM from "react-dom";
 import PopupForm from "../PopupForm/PopupForm";
 
 function PhoneBook() {
@@ -23,7 +22,8 @@ function PhoneBook() {
         createContact(newContact);
     }, [contacts]);
 
-    const editContact = useCallback((contact, id) => {
+    const editContact = useCallback((contact) => {
+        const {id} = contact;
         const newContacts = contacts.map(el => {
             if (el.id === id) {
                 return contact;
@@ -42,14 +42,7 @@ function PhoneBook() {
         setIdSelectedContact(null);
     }, [contacts]);
 
-    const selectedContact = contacts.find(contact => contact.id === idSelectedContact);
-
-    const createPopupForm = ReactDOM.createPortal(<PopupForm contact={selectedContact}
-                                                             editContact={editContact}
-                                                             addContact={addContact}
-                                                             hide={() => setPopupForm(false)}
-        />,
-        document.getElementById('popup'));
+    const selectedContact = useMemo(() => contacts.find(contact => contact.id === idSelectedContact), [contacts, idSelectedContact]);
 
     return (
         <div className={styles.phoneBook}>
@@ -66,7 +59,13 @@ function PhoneBook() {
                     deleteContact={() => handleDeleteContact(idSelectedContact)}
                     showPopupForm={() => setPopupForm(true)}
                 />}
-            {popupForm && createPopupForm}
+            {popupForm &&
+                <PopupForm
+                    contact={selectedContact}
+                    editContact={editContact}
+                    addContact={addContact}
+                    hide={() => setPopupForm(false)}
+                />}
         </div>
     );
 }

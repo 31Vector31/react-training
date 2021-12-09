@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import ReactDOM from "react-dom";
 import PopupConfirm from "../PopupConfirm/PopupConfirm";
 import {Button, IconButton} from '@mui/material';
 import {ArrowBack, Phone, Edit, Delete} from '@mui/icons-material';
@@ -31,11 +30,12 @@ function ContactInfo({contact, back, deleteContact, showPopupForm}) {
                     </div>
                 </div>
             </div>
-            {popupConfirm && ReactDOM.createPortal(<PopupConfirm
+            {popupConfirm &&
+                <PopupConfirm
                     contact={contact}
                     deleteContact={deleteContact}
-                    hide={() => setPopupConfirm(false)}/>,
-                document.getElementById('popup'))}
+                    hide={() => setPopupConfirm(false)}
+                />}
         </div>
     );
 }

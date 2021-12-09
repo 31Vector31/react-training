@@ -1,5 +1,8 @@
-.phoneBook {
+body {
     max-width: 1024px;
+}
+
+.phoneBook {
     font-size: 18pt;
     margin: 0 auto;
 }
