@@ -3,10 +3,13 @@ import ContactsList from '../ContactsList/ContactsList';
 import ContactInfo from '../ContactInfo/ContactInfo';
 import {createContact, readContacts, deleteContact, updateContact} from '../APIRequests';
 import styles from "./PhoneBook.module.css";
+import ReactDOM from "react-dom";
+import PopupForm from "../PopupForm/PopupForm";
 
 function PhoneBook() {
     const [contacts, setContacts] = useState([]);
     const [idSelectedContact, setIdSelectedContact] = useState(null);
+    const [popupForm, setPopupForm] = useState(false);
 
     useEffect(() => {
         readContacts().then(res => {
@@ -15,8 +18,8 @@ function PhoneBook() {
     }, []);
 
     const addContact = useCallback((contact) => {
-        const newContact = {...contact, id: contacts.length > 0 ? contacts[contacts.length - 1].id + 1 : 1};
-        setContacts((prevContacts => [...prevContacts, newContact]));
+        const newContact = {...contact, id: new Date().getTime()};
+        setContacts([...contacts, newContact]);
         createContact(newContact);
     }, [contacts]);
 
@@ -41,23 +44,29 @@ function PhoneBook() {
 
     const selectedContact = contacts.find(contact => contact.id === idSelectedContact);
 
+    const createPopupForm = ReactDOM.createPortal(<PopupForm contact={selectedContact}
+                                                             editContact={editContact}
+                                                             addContact={addContact}
+                                                             hide={() => setPopupForm(false)}
+        />,
+        document.getElementById('popup'));
+
     return (
-        <div className={styles.container}>
-            <div className={styles.phoneBook}>
-                {idSelectedContact === null ?
-                    <ContactsList
-                        contacts={contacts}
-                        setIdSelectedContact={setIdSelectedContact}
-                        addContact={addContact}
-                    />
-                    :
-                    <ContactInfo
-                        contact={selectedContact}
-                        setIdSelectedContact={setIdSelectedContact}
-                        deleteContact={() => handleDeleteContact(idSelectedContact)}
-                        editContact={editContact}
-                    />}
-            </div>
+        <div className={styles.phoneBook}>
+            {idSelectedContact === null ?
+                <ContactsList
+                    contacts={contacts}
+                    setIdSelectedContact={setIdSelectedContact}
+                    showPopupForm={() => setPopupForm(true)}
+                />
+                :
+                <ContactInfo
+                    contact={selectedContact}
+                    back={() => setIdSelectedContact(null)}
+                    deleteContact={() => handleDeleteContact(idSelectedContact)}
+                    showPopupForm={() => setPopupForm(true)}
+                />}
+            {popupForm && createPopupForm}
         </div>
     );
 }

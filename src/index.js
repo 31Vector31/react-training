@@ -11,7 +11,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <MovieReviews />
+    <PhoneBook />
   </React.StrictMode>,
   document.getElementById('root')
 );

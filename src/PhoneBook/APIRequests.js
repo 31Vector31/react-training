@@ -1,59 +1,61 @@
 import axios from "axios";
 
 const table = "contacts";
-const url = "https://api.m3o.com/v1/db/";
-const axiosConfig = {
-    "headers": {
-        'Content-Type': 'application/json',
+const baseURL = "https://api.m3o.com/v1/db";
+
+const axiosInstance = axios.create({
+    baseURL,
+    headers: {
+        "Content-Type": "application/json",
         "Authorization": "Bearer YzAyNzY5ZjUtOWVlNS00MjMwLWE0NTktZmMwZjA0ZDg1MjEw",
     }
-};
+});
 
 export function createContact(contact) {
     const {id, name, surname, telephone} = contact;
     const data = {
-        "table": table,
+        table,
         "record": {
             "id": String(id),
-            "name": name,
-            "surname": surname,
-            "telephone": telephone
+            name,
+            surname,
+            telephone
         }
     };
 
-    axios.post(url + "Create", data, axiosConfig);
+    axiosInstance.post("/Create", data);
 }
 
 export function readContacts() {
     const data = {
-        "table": table
+        table
     };
 
-    return axios.post(url + "Read", data, axiosConfig)
+    return axiosInstance.post("/Read", data)
         .then(res => res.data.records);
 }
 
 export function deleteContact(id) {
     const data = {
-        "table": table,
+        table,
         "id": String(id)
     };
 
-    axios.post(url + "Delete", data, axiosConfig);
+    axiosInstance.post("/Delete", data);
 }
 
 export function updateContact(contact) {
     const {id, name, surname, telephone} = contact;
     const data = {
-        "table": table,
+        table,
         "record": {
             "id": String(id),
-            "name": name,
-            "surname": surname,
-            "telephone": telephone
+            name,
+            surname,
+            telephone
         }
     };
 
-    axios.post(url + "Update", data, axiosConfig);
+    axiosInstance.post("/Update", data);
 }
 

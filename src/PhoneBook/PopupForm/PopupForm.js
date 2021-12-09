@@ -3,39 +3,44 @@ import {IconButton, TextField, Button} from '@mui/material';
 import {Clear} from "@mui/icons-material";
 import styles from "./PopupForm.module.css";
 
-function PopupForm({contact, hide, addContact, editContact, isEdit}) {
-    const [name, setName] = useState(contact ? contact.name : null);
-    const [surname, setSurname] = useState(contact ? contact.surname : null);
-    const [telephone, setTelephone] = useState(contact ? contact.telephone : null);
+const initialStateName = (contact) => contact ? contact.name : null;
+const initialStateSurname = (contact) => contact ? contact.surname : null;
+const initialStateTelephone = (contact) => contact ? contact.telephone : null;
+
+function PopupForm({contact, hide, addContact, editContact}) {
+    const [name, setName] = useState(() => initialStateName(contact));
+    const [surname, setSurname] = useState(() => initialStateSurname(contact));
+    const [telephone, setTelephone] = useState(() => initialStateTelephone(contact));
 
     const [isNameError, setIsNameError] = useState(false);
     const [isSurnameError, setIsSurnameError] = useState(false);
     const [isTelephoneError, setIsTelephoneError] = useState(false);
+
+    const defaultValueName = "";
+    const defaultValueSurname = "";
+    const defaultValueTelephone = "";
 
     const changeValue = (state) => event => {
         state(event.target.value);
     }
 
     useEffect(() => {
-        setIsNameError((name || "").length > 10);
+        setIsNameError((name || defaultValueName).length > 10);
     }, [name]);
 
     useEffect(() => {
-        setIsSurnameError((surname || "").length > 20);
+        setIsSurnameError((surname || defaultValueSurname).length > 20);
     }, [surname]);
 
     useEffect(() => {
         if (telephone === null) return;
-        setIsTelephoneError(!(/^\+\d{12}$/.test(telephone || "")));
+        setIsTelephoneError(!(/^\+\d{12}$/.test(telephone || defaultValueTelephone)));
     }, [telephone]);
 
     const save = () => {
         if (isNameError || isSurnameError || isTelephoneError) return;
-        isEdit ? editContact({id: contact.id, name, surname, telephone}, contact.id) : addContact({
-            name,
-            surname,
-            telephone
-        });
+        if (contact) editContact({id: contact.id, name, surname, telephone}, contact.id);
+        else addContact({name, surname, telephone});
         hide();
     }
 
@@ -43,7 +48,7 @@ function PopupForm({contact, hide, addContact, editContact, isEdit}) {
         <div className={styles.popupBg}>
             <div className={styles.popup}>
                 <div className={styles.header}>
-                    <h3>{isEdit ? "Редактировать контакт" : "Создать контакт"}</h3>
+                    <h3>{contact ? "Редактировать контакт" : "Создать контакт"}</h3>
                     <div>
                         <IconButton onClick={hide}>
                             <Clear/>
@@ -55,7 +60,7 @@ function PopupForm({contact, hide, addContact, editContact, isEdit}) {
                         error={isNameError}
                         helperText={isNameError && "Неправильная запись"}
                         onChange={changeValue(setName)}
-                        value={name || ""}
+                        value={name || defaultValueName}
                         label="Имя"
                         variant="outlined"/>
                 </div>
@@ -65,7 +70,7 @@ function PopupForm({contact, hide, addContact, editContact, isEdit}) {
                         helperText={isSurnameError && "Неправильная запись"}
                         className={styles.item}
                         onChange={changeValue(setSurname)}
-                        value={surname || ""}
+                        value={surname || defaultValueSurname}
                         label="Фамилия"
                         variant="outlined"/>
                 </div>
@@ -75,7 +80,7 @@ function PopupForm({contact, hide, addContact, editContact, isEdit}) {
                         helperText={isTelephoneError && "Неправильная запись"}
                         className={styles.item}
                         onChange={changeValue(setTelephone)}
-                        value={telephone || ""}
+                        value={telephone || defaultValueTelephone}
                         label="Номер телефона"
                         variant="outlined"/>
                 </div>

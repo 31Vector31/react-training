@@ -1,19 +1,15 @@
-import React, {useState} from 'react';
-import ReactDOM from 'react-dom';
-import PopupForm from '../PopupForm/PopupForm';
 import {Button, Paper} from '@mui/material';
 import styles from "./ContactsList.module.css";
 
-function ContactsList({contacts, setIdSelectedContact, addContact}) {
-    const [popup, setPopup] = useState(false);
-
+function ContactsList({contacts, setIdSelectedContact, showPopupForm}) {
     return (
-        <div>
-            <Button
-                variant="contained"
-                onClick={() => setPopup(true)}>
-                Добавить контакт
-            </Button>
+        <div className={styles.contactsList}>
+            <div>
+                <Button
+                    variant="contained"
+                    onClick={showPopupForm}>
+                    Добавить контакт
+                </Button></div>
             <div className={styles.container}>
                 {contacts.map(contact => {
                         const {id, name, surname} = contact;
@@ -28,11 +24,6 @@ function ContactsList({contacts, setIdSelectedContact, addContact}) {
                     }
                 )}
             </div>
-            {popup && ReactDOM.createPortal(<PopupForm
-                                                addContact={addContact}
-                                                isEdit={false}
-                                                hide={() => setPopup(false)}/>,
-                document.getElementById('popup'))}
         </div>
     );
 }

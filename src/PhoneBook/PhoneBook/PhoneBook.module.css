@@ -1,8 +1,5 @@
-.container {
-    display: flex;
-    justify-content: center;
-}
-
-.phoneBook{
-    max-width: 480px;
+.phoneBook {
+    max-width: 1024px;
+    font-size: 18pt;
+    margin: 0 auto;
 }
