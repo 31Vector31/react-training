@@ -1,0 +1,21 @@
+.filters {
+    min-width: 200px;
+    background-color: rgb(241, 246, 247);
+    border-radius: 10px;
+}
+
+.title {
+    background-color: rgb(25, 118, 210);
+    padding: 14px;
+    color: white;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.brand {
+    padding: 0 14px;
+}
+
+.price {
+    padding: 7px 14px 14px 14px;
+}

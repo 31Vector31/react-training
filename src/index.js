@@ -12,7 +12,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <PhoneBook />
+    <OnlineStore />
   </React.StrictMode>,
   document.getElementById('root')
 );

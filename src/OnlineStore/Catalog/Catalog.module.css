@@ -1,0 +1,20 @@
+.catalog {
+    margin: 50px 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.catalog > * {
+    margin: 20px;
+}
+
+.content {
+    width: 100%;
+}
+
+.products {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
