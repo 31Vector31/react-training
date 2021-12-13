@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import PopupConfirm from "../PopupConfirm/PopupConfirm";
 import {Button, IconButton} from '@mui/material';
 import {ArrowBack, Phone, Edit, Delete} from '@mui/icons-material';
@@ -7,6 +7,10 @@ import styles from "./ContactInfo.module.css";
 function ContactInfo({contact, back, deleteContact, showPopupForm}) {
     const {name, surname, telephone} = contact;
     const [popupConfirm, setPopupConfirm] = useState(false);
+
+    const hidePopupConfirm = useCallback(() => {
+        setPopupConfirm(false);
+    }, []);
 
     return (
         <div>
@@ -34,7 +38,7 @@ function ContactInfo({contact, back, deleteContact, showPopupForm}) {
                 <PopupConfirm
                     contact={contact}
                     deleteContact={deleteContact}
-                    hide={() => setPopupConfirm(false)}
+                    hide={hidePopupConfirm}
                 />}
         </div>
     );

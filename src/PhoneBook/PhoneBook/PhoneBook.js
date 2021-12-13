@@ -11,6 +11,11 @@ function PhoneBook() {
     const [popupForm, setPopupForm] = useState(false);
 
     useEffect(() => {
+        const body = document.querySelector('body').style;
+        body.maxWidth = "1024px";
+        body.margin = "0 auto";
+        body.height = "100vh";
+        body.position = "relative";
         readContacts().then(res => {
             setContacts(res);
         });
@@ -42,6 +47,22 @@ function PhoneBook() {
         setIdSelectedContact(null);
     }, [contacts]);
 
+    const showPopupForm = useCallback(() => {
+        setPopupForm(true);
+    }, []);
+
+    const hidePopupForm = useCallback(() => {
+        setPopupForm(false);
+    }, []);
+
+    const nullifySelectedContact = useCallback(() => {
+        setIdSelectedContact(null);
+    }, []);
+
+    const removeContact = useCallback(() => {
+        handleDeleteContact(idSelectedContact);
+    }, [idSelectedContact]);
+
     const selectedContact = useMemo(() => contacts.find(contact => contact.id === idSelectedContact), [contacts, idSelectedContact]);
 
     return (
@@ -50,21 +71,21 @@ function PhoneBook() {
                 <ContactsList
                     contacts={contacts}
                     setIdSelectedContact={setIdSelectedContact}
-                    showPopupForm={() => setPopupForm(true)}
+                    showPopupForm={showPopupForm}
                 />
                 :
                 <ContactInfo
                     contact={selectedContact}
-                    back={() => setIdSelectedContact(null)}
-                    deleteContact={() => handleDeleteContact(idSelectedContact)}
-                    showPopupForm={() => setPopupForm(true)}
+                    back={nullifySelectedContact}
+                    deleteContact={removeContact}
+                    showPopupForm={showPopupForm}
                 />}
             {popupForm &&
                 <PopupForm
                     contact={selectedContact}
                     editContact={editContact}
                     addContact={addContact}
-                    hide={() => setPopupForm(false)}
+                    hide={hidePopupForm}
                 />}
         </div>
     );
