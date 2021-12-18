@@ -8,11 +8,12 @@ import PictureGallery from './PictureGallery/PictureGallery';
 import PhoneBook from './PhoneBook/PhoneBook/PhoneBook';
 import MovieReviews from './MovieReviews/Router/Reviews';
 import OnlineStore from './OnlineStore/Router';
+import Field from "./Field/Container";
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <OnlineStore />
+    <Field />
   </React.StrictMode>,
   document.getElementById('root')
 );
