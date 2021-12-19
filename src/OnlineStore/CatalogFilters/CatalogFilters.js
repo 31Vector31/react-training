@@ -7,37 +7,50 @@ const minDistance = 2000;
 const minPrice = 0;
 const maxPrice = 30000;
 
-function CatalogFilters({addSearch, params}) {
+function CatalogFilters({allBrands, addSearch, params}) {
     const [price, setPrice] = useState([minPrice, maxPrice]);
-    const [checkedApple, setCheckedApple] = useState(false);
-    const [checkedAsus, setCheckedAsus] = useState(false);
+    const [brands, setBrands] = useState([]);
 
-    const changeChecked = (state) => event => {
-        state(event.target.checked);
+    const changeChecked = (value) => event => {
+        setBrands(brands.map(el => {
+            const {brand} = el;
+            if (brand === value) return {brand, isChecked: event.target.checked};
+            return el;
+        }));
     }
+
+    useEffect(() => {
+        setBrands(allBrands.map(brand => {
+            return {brand, isChecked: false};
+        }));
+    }, [allBrands])
 
     useEffect(() => {
         let {startPrice = minPrice, endPrice = maxPrice, brand = []} = params || {};
         setPrice([Number(startPrice), Number(endPrice)]);
         if (!Array.isArray(brand)) brand = [brand];
-        brand.forEach(el => {
-            if (el === "Apple") setCheckedApple(true);
-            if (el === "Asus") setCheckedAsus(true);
+        const selected = allBrands.map((element) => {
+            if (brand.find(el => el === element)) return {brand: element, isChecked: true};
+            return {brand: element, isChecked: false};
         });
+        setBrands(selected);
     }, [params])
 
     useEffect(() => {
-        let brand = [];
-        if (checkedApple) brand.push("Apple");
-        if (checkedAsus) brand.push("Asus");
-        addSearch("brand", brand);
-    }, [checkedApple, checkedAsus])
+        const brand = brands.filter(el => {
+            const {isChecked} = el;
+            return isChecked;
+        }).map(el => {
+            const {brand} = el;
+            return brand;
+        });
+        addSearch({brand});
+    }, [brands])
 
     const handleChangePrice = (event, newValue, activeThumb) => {
         if (!Array.isArray(newValue)) {
             return;
         }
-
         if (newValue[1] - newValue[0] < minDistance) {
             if (activeThumb === 0) {
                 const clamped = Math.min(newValue[0], maxPrice - minDistance);
@@ -49,8 +62,7 @@ function CatalogFilters({addSearch, params}) {
         } else {
             setPrice(newValue);
             const [startPrice, endPrice] = newValue;
-            addSearch("startPrice", startPrice);
-            addSearch("endPrice", endPrice);
+            addSearch({startPrice, endPrice});
         }
     };
 
@@ -62,14 +74,15 @@ function CatalogFilters({addSearch, params}) {
             </div>
             <div className={styles.brand}>
                 <div className={styles.checkboxGroup}>
-                    <div>
-                        <Checkbox checked={checkedApple} onChange={changeChecked(setCheckedApple)}/>
-                        Apple
-                    </div>
-                    <div>
-                        <Checkbox checked={checkedAsus} onChange={changeChecked(setCheckedAsus)}/>
-                        Asus
-                    </div>
+                    {brands.map(el => {
+                        const {brand, isChecked} = el;
+                        return (
+                            <div key={brand}>
+                                <Checkbox checked={isChecked} onChange={changeChecked(brand)}/>
+                                {brand}
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
             <hr/>

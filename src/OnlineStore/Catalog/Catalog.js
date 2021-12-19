@@ -1,8 +1,8 @@
-import React, {useEffect, useState, useCallback, useMemo} from 'react';
+import React, {useState, useCallback, useMemo, useEffect} from 'react';
 import {useSearchParams} from "react-router-dom";
 import CatalogFilters from "../CatalogFilters/CatalogFilters";
 import Header from "../Header/Header";
-import ProductCard from "../ProductCard/ProductCard";
+import ProductList from "../ProductList/ProductList";
 import styles from "./Catalog.module.css";
 
 const groupParamsByKey = (params) => [...params.entries()].reduce((acc, tuple) => {
@@ -18,6 +18,8 @@ const groupParamsByKey = (params) => [...params.entries()].reduce((acc, tuple) =
     }
     return acc;
 }, {});
+
+const brands = ["Apple", "Asus"];
 
 function Catalog() {
     const [products, setProducts] = useState([
@@ -36,65 +38,37 @@ function Catalog() {
     ]);
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const [params, setSearch] = useState({});
+    const params = useMemo(() => groupParamsByKey(searchParams), [searchParams]);
 
-    const {startPrice, endPrice, brand, search, sort} = params;
-    const searchLowerCase = (search && search.length !== 0) ? search.toLowerCase() || null : null;
-
-    const requiredProducts = useMemo(() => products.filter(product => {
-        const {price, brand: brandProduct, title} = product;
-        if (startPrice)
-            if (price < startPrice) return false;
-
-        if (endPrice)
-            if (price > endPrice) return false;
-
-        if (brand && brand.length !== 0) {
-            if (Array.isArray(brand)) {
-                if (brand.find(el => el === brandProduct) === undefined) return false;
-            } else if (brand !== brandProduct) return false;
-        }
-
-        if (searchLowerCase)
-            if (!title.toLowerCase().includes(searchLowerCase)) return false;
-
-        return true;
-    }), [params, products]);
-
-    const addSearch = useCallback((key, value) => {
-        if (!value) value = [];
-        setSearch(prevSearch => {
-            return {...prevSearch, [`${key}`]: value}
+    useEffect(() => {
+        let validatedParams = {};
+        const sort = ["", "title", "increase", "decrease"];
+        Object.entries(params).forEach(([key, value]) => {
+            if (key === "startPrice" || key === "endPrice") if (!Number(value)) validatedParams[key] = [];
+            if (key === "sort") if (sort.find((el) => el === value) === undefined) validatedParams[key] = [];
+            if (key === "brand") {
+                const brandValue = Array.isArray(value) ? value : [value];
+                if (brandValue.every(item => brands.indexOf(item) === -1)) validatedParams[key] = [];
+            }
         });
-    }, []);
+        setSearchParams({...params, ...validatedParams});
+    }, [params]);
 
-
-    useEffect(() => {
-        setSearch(groupParamsByKey(searchParams));
-    }, [])
-
-    useEffect(() => {
-        setSearchParams(params);
-    }, [params])
-
-    const sortProduct = (a, b) => {
-        if (!sort) return;
-        if (sort === "increase") return a.price > b.price ? 1 : -1;
-        if (sort === "decrease") return a.price < b.price ? 1 : -1;
-        return a.title.localeCompare(b.title);
-    }
+    const addSearch = useCallback(parameter => {
+        const newParameter = {};
+        Object.entries(parameter).forEach(([key, value]) => {
+            if (value) newParameter[key] = value;
+            else newParameter[key] = [];
+        });
+        setSearchParams({...params, ...newParameter});
+    }, [params]);
 
     return (
         <div className={styles.catalog}>
-            <CatalogFilters addSearch={addSearch} params={params}/>
+            <CatalogFilters allBrands={brands} addSearch={addSearch} params={params}/>
             <div className={styles.content}>
                 <Header addSearch={addSearch} params={params}/>
-                <div className={styles.products}>
-                    {requiredProducts.length !== 0 ? requiredProducts.sort(sortProduct).map((product, index) =>
-                            <ProductCard key={index} product={product}/>)
-                        :
-                        <h3>Выбранных продуктов нет</h3>}
-                </div>
+                <ProductList products={products} params={params}/>
             </div>
         </div>
     );

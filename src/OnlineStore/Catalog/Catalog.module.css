@@ -12,9 +12,3 @@
 .content {
     width: 100%;
 }
-
-.products {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}

@@ -28,11 +28,11 @@ function Header({addSearch, params}) {
     }
 
     useEffect(() => {
-        addSearch("sort", sortState)
+        addSearch({"sort": sortState})
     }, [sortState])
 
     const searchClick = () => {
-        addSearch("search", searchState);
+        addSearch({"search": searchState});
     }
 
     return (
