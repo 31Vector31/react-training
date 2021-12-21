@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useMemo, useEffect} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {useSearchParams} from "react-router-dom";
 import CatalogFilters from "../CatalogFilters/CatalogFilters";
 import Header from "../Header/Header";
@@ -40,20 +40,6 @@ function Catalog() {
     const [searchParams, setSearchParams] = useSearchParams();
     const params = useMemo(() => groupParamsByKey(searchParams), [searchParams]);
 
-    useEffect(() => {
-        let validatedParams = {};
-        const sort = ["", "title", "increase", "decrease"];
-        Object.entries(params).forEach(([key, value]) => {
-            if (key === "startPrice" || key === "endPrice") if (!Number(value)) validatedParams[key] = [];
-            if (key === "sort") if (sort.find((el) => el === value) === undefined) validatedParams[key] = [];
-            if (key === "brand") {
-                const brandValue = Array.isArray(value) ? value : [value];
-                if (brandValue.every(item => brands.indexOf(item) === -1)) validatedParams[key] = [];
-            }
-        });
-        setSearchParams({...params, ...validatedParams});
-    }, [params]);
-
     const addSearch = useCallback(parameter => {
         const newParameter = {};
         Object.entries(parameter).forEach(([key, value]) => {
@@ -65,9 +51,18 @@ function Catalog() {
 
     return (
         <div className={styles.catalog}>
-            <CatalogFilters allBrands={brands} addSearch={addSearch} params={params}/>
+            <CatalogFilters
+                allBrands={brands}
+                setSearchParams={setSearchParams}
+                addSearch={addSearch}
+                params={params}
+            />
             <div className={styles.content}>
-                <Header addSearch={addSearch} params={params}/>
+                <Header
+                    addSearch={addSearch}
+                    params={params}
+                    setSearchParams={setSearchParams}
+                />
                 <ProductList products={products} params={params}/>
             </div>
         </div>

@@ -12,14 +12,22 @@ import styles from "./Header.module.css";
 
 const defaultValueSort = "title";
 const defaultValueSearch = null;
+const allSort = ["title", "increase", "decrease"];
 
-function Header({addSearch, params}) {
+function Header({setSearchParams, addSearch, params}) {
     const [sortState, setSortState] = useState(defaultValueSort);
     const [searchState, setSearchState] = useState(defaultValueSearch);
 
     useEffect(() => {
         const {sort = defaultValueSort, search = defaultValueSearch} = params || {};
-        setSortState(sort);
+        let validatedParams = {};
+
+        if (!allSort.find((el) => el === sort)) validatedParams["sort"] = [];
+        setSearchParams({...params, ...validatedParams});
+
+        if (JSON.stringify(validatedParams) === "{}") {
+            setSortState(sort);
+        }
         setSearchState(search);
     }, [params])
 

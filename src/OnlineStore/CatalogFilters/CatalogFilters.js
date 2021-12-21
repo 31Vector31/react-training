@@ -7,44 +7,35 @@ const minDistance = 2000;
 const minPrice = 0;
 const maxPrice = 30000;
 
-function CatalogFilters({allBrands, addSearch, params}) {
+function CatalogFilters({allBrands, addSearch, params, setSearchParams}) {
     const [price, setPrice] = useState([minPrice, maxPrice]);
     const [brands, setBrands] = useState([]);
 
     const changeChecked = (value) => event => {
-        setBrands(brands.map(el => {
-            const {brand} = el;
-            if (brand === value) return {brand, isChecked: event.target.checked};
-            return el;
-        }));
+        if (event.target.checked) setBrands([...brands, value]);
+        else setBrands(brands.filter(el => el !== value));
     }
 
     useEffect(() => {
-        setBrands(allBrands.map(brand => {
-            return {brand, isChecked: false};
-        }));
-    }, [allBrands])
-
-    useEffect(() => {
         let {startPrice = minPrice, endPrice = maxPrice, brand = []} = params || {};
-        setPrice([Number(startPrice), Number(endPrice)]);
         if (!Array.isArray(brand)) brand = [brand];
-        const selected = allBrands.map((element) => {
-            if (brand.find(el => el === element)) return {brand: element, isChecked: true};
-            return {brand: element, isChecked: false};
-        });
-        setBrands(selected);
+        startPrice = Number(startPrice);
+        endPrice = Number(endPrice);
+
+        let validatedParams = {};
+        if (!endPrice || endPrice < minPrice || endPrice > maxPrice || endPrice < startPrice) validatedParams['endPrice'] = [];
+        if (!startPrice || startPrice < minPrice || startPrice > maxPrice || startPrice > endPrice) validatedParams['startPrice'] = [];
+        if (brand.every(item => allBrands.indexOf(item) === -1)) validatedParams["brand"] = [];
+        setSearchParams({...params, ...validatedParams});
+
+        if (JSON.stringify(validatedParams) === "{}") {
+            setPrice([startPrice, endPrice]);
+            setBrands(brand);
+        }
     }, [params])
 
     useEffect(() => {
-        const brand = brands.filter(el => {
-            const {isChecked} = el;
-            return isChecked;
-        }).map(el => {
-            const {brand} = el;
-            return brand;
-        });
-        addSearch({brand});
+        addSearch({brand: brands});
     }, [brands])
 
     const handleChangePrice = (event, newValue, activeThumb) => {
@@ -74,11 +65,11 @@ function CatalogFilters({allBrands, addSearch, params}) {
             </div>
             <div className={styles.brand}>
                 <div className={styles.checkboxGroup}>
-                    {brands.map(el => {
-                        const {brand, isChecked} = el;
+                    {allBrands.map(brand => {
                         return (
                             <div key={brand}>
-                                <Checkbox checked={isChecked} onChange={changeChecked(brand)}/>
+                                <Checkbox checked={Boolean(brands.find(el => el === brand))}
+                                          onChange={changeChecked(brand)}/>
                                 {brand}
                             </div>
                         );
