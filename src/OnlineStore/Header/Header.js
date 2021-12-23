@@ -14,30 +14,30 @@ const defaultValueSort = "title";
 const defaultValueSearch = null;
 const allSort = ["title", "increase", "decrease"];
 
-function Header({setSearchParams, addSearch, params}) {
+function Header({addSearch, filters, setFilters}) {
     const [sortState, setSortState] = useState(defaultValueSort);
     const [searchState, setSearchState] = useState(defaultValueSearch);
 
     useEffect(() => {
-        const {sort = defaultValueSort, search = defaultValueSearch} = params || {};
-        let validatedParams = {};
-
-        if (!allSort.find((el) => el === sort)) validatedParams["sort"] = [];
-        setSearchParams({...params, ...validatedParams});
-
-        if (JSON.stringify(validatedParams) === "{}") {
-            setSortState(sort);
-        }
-        setSearchState(search);
-    }, [params])
-
-    const handleChange = (state) => event => {
-        state(event.target.value);
-    }
+        setFilters((filters) => {
+            let validatedParams = {...filters};
+            const {sort = defaultValueSort} = validatedParams || {};
+            if (!allSort.find((el) => el === sort)) delete validatedParams["sort"];
+            return validatedParams;
+        });
+    }, []);
 
     useEffect(() => {
-        addSearch({"sort": sortState})
-    }, [sortState])
+        const {sort = defaultValueSort, search = defaultValueSearch} = filters || {};
+        setSortState(sort);
+        setSearchState(search);
+    }, [filters]);
+
+    const handleChange = (state) => event => {
+        const value = event.target.value;
+        state(value);
+        if (state === setSortState) addSearch({"sort": value});
+    }
 
     const searchClick = () => {
         addSearch({"search": searchState});
@@ -45,11 +45,12 @@ function Header({setSearchParams, addSearch, params}) {
 
     return (
         <div className={styles.header}>
-            <FormControl variant="filled">
+            <FormControl>
                 <InputLabel>Сортировка</InputLabel>
                 <Select
                     value={sortState}
                     onChange={handleChange(setSortState)}
+                    label="Сортировка"
                     sx={{width: 250}}
                 >
                     <MenuItem value={"title"}>По имени</MenuItem>

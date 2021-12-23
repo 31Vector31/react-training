@@ -2,9 +2,9 @@ import ProductCard from "../ProductCard/ProductCard";
 import React, {useMemo} from "react";
 import styles from "./ProductList.module.css";
 
-function ProductList({products, params}) {
+function ProductList({products, filters}) {
 
-    const {startPrice, endPrice, brand, search, sort} = params;
+    const {startPrice, endPrice, brand, search, sort} = filters;
 
     const brandParams = useMemo(() => {
         return typeof brand === "string" ? [brand] : brand;
@@ -20,7 +20,7 @@ function ProductList({products, params}) {
             (endPrice ? (price < endPrice) : true) &&
             (brandParams ? (brandParams.find(el => el === brandProduct)) : true) &&
             (searchLowerCase ? (title.toLowerCase().includes(searchLowerCase)) : true);
-    }), [params, products]);
+    }), [filters, products]);
 
     const sortProduct = (a, b) => {
         if (!sort) return;

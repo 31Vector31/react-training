@@ -1,61 +1,55 @@
 import React, {useEffect, useState} from 'react';
-import Slider from '@mui/material/Slider';
 import Checkbox from '@mui/material/Checkbox';
+import Sliders from "../Sliders";
 import styles from "./CatalogFilters.module.css";
 
-const minDistance = 2000;
 const minPrice = 0;
 const maxPrice = 30000;
+const allBrands = ["Apple", "Asus"];
 
-function CatalogFilters({allBrands, addSearch, params, setSearchParams}) {
+function CatalogFilters({addSearch, filters, setFilters}) {
     const [price, setPrice] = useState([minPrice, maxPrice]);
     const [brands, setBrands] = useState([]);
 
-    const changeChecked = (value) => event => {
-        if (event.target.checked) setBrands([...brands, value]);
-        else setBrands(brands.filter(el => el !== value));
-    }
+    useEffect(() => {
+        setFilters((filters) => {
+            let validatedParams = {...filters};
+            let {startPrice = minPrice, endPrice = maxPrice, brand = []} = validatedParams || {};
+            if (!Array.isArray(brand)) brand = [brand];
+            startPrice = Number(startPrice);
+            endPrice = Number(endPrice);
+
+            if (!endPrice || endPrice < minPrice || endPrice > maxPrice || endPrice < startPrice)
+                delete validatedParams['endPrice'];
+            if (!startPrice || startPrice < minPrice || startPrice > maxPrice || startPrice > endPrice)
+                delete validatedParams['startPrice'];
+            const validatedBrands = brand.filter(el => allBrands.indexOf(el) !== -1)
+            if (validatedBrands.length) validatedParams['brand'] = validatedBrands;
+            else delete validatedParams["brand"];
+
+            return validatedParams;
+        });
+    }, []);
 
     useEffect(() => {
-        let {startPrice = minPrice, endPrice = maxPrice, brand = []} = params || {};
+        let {startPrice = minPrice, endPrice = maxPrice, brand = []} = filters || {};
         if (!Array.isArray(brand)) brand = [brand];
         startPrice = Number(startPrice);
         endPrice = Number(endPrice);
 
-        let validatedParams = {};
-        if (!endPrice || endPrice < minPrice || endPrice > maxPrice || endPrice < startPrice) validatedParams['endPrice'] = [];
-        if (!startPrice || startPrice < minPrice || startPrice > maxPrice || startPrice > endPrice) validatedParams['startPrice'] = [];
-        if (brand.every(item => allBrands.indexOf(item) === -1)) validatedParams["brand"] = [];
-        setSearchParams({...params, ...validatedParams});
+        setPrice([startPrice, endPrice]);
+        setBrands(brand);
+    }, [filters]);
 
-        if (JSON.stringify(validatedParams) === "{}") {
-            setPrice([startPrice, endPrice]);
-            setBrands(brand);
-        }
-    }, [params])
+    const changeChecked = (value) => event => {
+        if (event.target.checked) addSearch({brand: [...brands, value]});
+        else addSearch({brand: brands.filter(el => el !== value)});
+    }
 
-    useEffect(() => {
-        addSearch({brand: brands});
-    }, [brands])
-
-    const handleChangePrice = (event, newValue, activeThumb) => {
-        if (!Array.isArray(newValue)) {
-            return;
-        }
-        if (newValue[1] - newValue[0] < minDistance) {
-            if (activeThumb === 0) {
-                const clamped = Math.min(newValue[0], maxPrice - minDistance);
-                setPrice([clamped, clamped + minDistance]);
-            } else {
-                const clamped = Math.max(newValue[1], minDistance);
-                setPrice([clamped - minDistance, clamped]);
-            }
-        } else {
-            setPrice(newValue);
-            const [startPrice, endPrice] = newValue;
-            addSearch({startPrice, endPrice});
-        }
-    };
+    const handleChangePrice = (newValue) => {
+        const [startPrice, endPrice] = newValue;
+        addSearch({startPrice, endPrice});
+    }
 
     const [startPrice, endPrice] = price;
     return (
@@ -64,7 +58,7 @@ function CatalogFilters({allBrands, addSearch, params, setSearchParams}) {
                 Фильтры продуктов
             </div>
             <div className={styles.brand}>
-                <div className={styles.checkboxGroup}>
+                <div>
                     {allBrands.map(brand => {
                         return (
                             <div key={brand}>
@@ -79,13 +73,11 @@ function CatalogFilters({allBrands, addSearch, params, setSearchParams}) {
             <hr/>
             <div className={styles.price}>
                 Цена
-                <Slider
+                <Sliders
                     value={price}
-                    onChange={handleChangePrice}
-                    valueLabelDisplay="auto"
-                    disableSwap
-                    min={minPrice}
-                    max={maxPrice}
+                    minValue={minPrice}
+                    maxValue={maxPrice}
+                    change={handleChangePrice}
                 />
                 <div>От {startPrice} грн</div>
                 <div>до {endPrice} грн</div>

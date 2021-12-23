@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useMemo} from 'react';
+import React, {useState, useCallback} from 'react';
 import {useSearchParams} from "react-router-dom";
 import CatalogFilters from "../CatalogFilters/CatalogFilters";
 import Header from "../Header/Header";
@@ -19,8 +19,6 @@ const groupParamsByKey = (params) => [...params.entries()].reduce((acc, tuple) =
     return acc;
 }, {});
 
-const brands = ["Apple", "Asus"];
-
 function Catalog() {
     const [products, setProducts] = useState([
         {
@@ -38,32 +36,35 @@ function Catalog() {
     ]);
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const params = useMemo(() => groupParamsByKey(searchParams), [searchParams]);
+    const [filters, setFilters] = useState(groupParamsByKey(searchParams));
 
     const addSearch = useCallback(parameter => {
-        const newParameter = {};
+        const newParameters = {...filters};
         Object.entries(parameter).forEach(([key, value]) => {
-            if (value) newParameter[key] = value;
-            else newParameter[key] = [];
+            if (value && value.length !== 0) newParameters[key] = value;
+            else delete newParameters[key];
         });
-        setSearchParams({...params, ...newParameter});
-    }, [params]);
+        setSearchParams(newParameters);
+        setFilters(newParameters);
+    }, [filters]);
 
     return (
         <div className={styles.catalog}>
             <CatalogFilters
-                allBrands={brands}
-                setSearchParams={setSearchParams}
                 addSearch={addSearch}
-                params={params}
+                filters={filters}
+                setFilters={setFilters}
             />
             <div className={styles.content}>
                 <Header
                     addSearch={addSearch}
-                    params={params}
-                    setSearchParams={setSearchParams}
+                    filters={filters}
+                    setFilters={setFilters}
                 />
-                <ProductList products={products} params={params}/>
+                <ProductList
+                    products={products}
+                    filters={filters}
+                />
             </div>
         </div>
     );
