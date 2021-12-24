@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {useSearchParams} from "react-router-dom";
 import CatalogFilters from "../CatalogFilters/CatalogFilters";
 import Header from "../Header/Header";
@@ -36,7 +36,7 @@ function Catalog() {
     ]);
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const [filters, setFilters] = useState(groupParamsByKey(searchParams));
+    const [filters, setFilters] = useState({});
 
     const addSearch = useCallback(parameter => {
         const newParameters = {...filters};
@@ -48,18 +48,22 @@ function Catalog() {
         setFilters(newParameters);
     }, [filters]);
 
+    const params = useMemo(() => groupParamsByKey(searchParams), [searchParams]);
+
     return (
         <div className={styles.catalog}>
             <CatalogFilters
                 addSearch={addSearch}
                 filters={filters}
                 setFilters={setFilters}
+                searchParams={params}
             />
             <div className={styles.content}>
                 <Header
                     addSearch={addSearch}
                     filters={filters}
                     setFilters={setFilters}
+                    searchParams={params}
                 />
                 <ProductList
                     products={products}

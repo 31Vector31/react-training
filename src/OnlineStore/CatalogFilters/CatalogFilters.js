@@ -7,36 +7,36 @@ const minPrice = 0;
 const maxPrice = 30000;
 const allBrands = ["Apple", "Asus"];
 
-function CatalogFilters({addSearch, filters, setFilters}) {
+const initialValue = (obj) => {
+    let {startPrice = minPrice, endPrice = maxPrice, brand = []} = {...obj};
+    if (!Array.isArray(brand)) brand = [brand];
+    startPrice = Number(startPrice);
+    endPrice = Number(endPrice);
+    return {startPrice, endPrice, brand};
+}
+
+function CatalogFilters({addSearch, searchParams, filters, setFilters}) {
     const [price, setPrice] = useState([minPrice, maxPrice]);
     const [brands, setBrands] = useState([]);
 
     useEffect(() => {
         setFilters((filters) => {
-            let validatedParams = {...filters};
-            let {startPrice = minPrice, endPrice = maxPrice, brand = []} = validatedParams || {};
-            if (!Array.isArray(brand)) brand = [brand];
-            startPrice = Number(startPrice);
-            endPrice = Number(endPrice);
+            let validatedParams = {};
+            const {startPrice, endPrice, brand} = initialValue(searchParams);
 
-            if (!endPrice || endPrice < minPrice || endPrice > maxPrice || endPrice < startPrice)
-                delete validatedParams['endPrice'];
-            if (!startPrice || startPrice < minPrice || startPrice > maxPrice || startPrice > endPrice)
-                delete validatedParams['startPrice'];
+            if (endPrice && endPrice > minPrice && endPrice < maxPrice && endPrice > startPrice)
+                validatedParams['endPrice'] = endPrice;
+            if (startPrice && startPrice > minPrice && startPrice < maxPrice && startPrice < endPrice)
+                validatedParams['startPrice'] = startPrice;
             const validatedBrands = brand.filter(el => allBrands.indexOf(el) !== -1)
             if (validatedBrands.length) validatedParams['brand'] = validatedBrands;
-            else delete validatedParams["brand"];
 
-            return validatedParams;
+            return {...filters, ...validatedParams};
         });
     }, []);
 
     useEffect(() => {
-        let {startPrice = minPrice, endPrice = maxPrice, brand = []} = filters || {};
-        if (!Array.isArray(brand)) brand = [brand];
-        startPrice = Number(startPrice);
-        endPrice = Number(endPrice);
-
+        const {startPrice, endPrice, brand} = initialValue(filters);
         setPrice([startPrice, endPrice]);
         setBrands(brand);
     }, [filters]);

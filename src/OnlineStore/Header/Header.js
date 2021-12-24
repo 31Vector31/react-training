@@ -10,25 +10,30 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from "./Header.module.css";
 
-const defaultValueSort = "title";
+const defaultValueSort = "";
 const defaultValueSearch = null;
 const allSort = ["title", "increase", "decrease"];
 
-function Header({addSearch, filters, setFilters}) {
+const initialValue = (obj) => {
+    const {sort = defaultValueSort, search = defaultValueSearch} = obj;
+    return {sort, search};
+}
+
+function Header({addSearch, filters, setFilters, searchParams}) {
     const [sortState, setSortState] = useState(defaultValueSort);
     const [searchState, setSearchState] = useState(defaultValueSearch);
 
     useEffect(() => {
         setFilters((filters) => {
-            let validatedParams = {...filters};
-            const {sort = defaultValueSort} = validatedParams || {};
-            if (!allSort.find((el) => el === sort)) delete validatedParams["sort"];
-            return validatedParams;
+            let validatedParams = {};
+            const {sort} = initialValue(searchParams);
+            if (allSort.find((el) => el === sort) !== undefined) validatedParams["sort"] = sort;
+            return {...filters, ...validatedParams};
         });
     }, []);
 
     useEffect(() => {
-        const {sort = defaultValueSort, search = defaultValueSearch} = filters || {};
+        const {sort, search} = initialValue(filters);
         setSortState(sort);
         setSearchState(search);
     }, [filters]);
