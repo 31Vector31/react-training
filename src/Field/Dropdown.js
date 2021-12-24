@@ -3,31 +3,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import {useMemo} from "react";
 
-function Dropdown({value, onChange, error, validationText}) {
-
-    const selectedValue = useMemo(() => value.find(el => {
-        const {isSelected} = el;
-        return isSelected;
-    }), [value]);
-
+function Dropdown({value, options, onChange, error, validationText}) {
     return (
         <FormControl
             error={error}
             fullWidth>
             <InputLabel>Выбор</InputLabel>
             <Select
-                value={selectedValue ? selectedValue.value : ""}
+                value={value}
                 label="Выбор"
                 onChange={onChange}
             >
-                {value.map(el => {
-                        const {value} = el;
-                        return (
-                            <MenuItem key={value} value={value}>{value}</MenuItem>
-                        );
-                    }
+                {options.map(el =>
+                    <MenuItem key={el} value={el}>{el}</MenuItem>
                 )}
             </Select>
             <FormHelperText>{validationText.map((text, index) => <p key={index}>{text}</p>)}</FormHelperText>

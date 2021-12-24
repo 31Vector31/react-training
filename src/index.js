@@ -13,7 +13,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <OnlineStore />
+    <Field />
   </React.StrictMode>,
   document.getElementById('root')
 );

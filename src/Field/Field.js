@@ -1,18 +1,19 @@
 import React, {useState, useEffect} from 'react';
 
-function Field({value, onChange, validators, component}) {
+function Field({value, options, onChange, validators, component}) {
 
     const [validationText, setValidationText] = useState([]);
 
     useEffect(() => {
-        setValidationText([]);
+        let validation = [];
         validators.forEach((validator) => {
             const text = validator(value);
-            if (text) setValidationText((validationText) => [...validationText, text]);
+            if (text) validation.push(text);
         })
+        setValidationText(validation);
     }, [value, validators])
 
-    return component({value, onChange, validationText, invalid: Boolean(validationText.length)});
+    return component({value, options, onChange, validationText, invalid: Boolean(validationText.length)});
 }
 
 export default Field;

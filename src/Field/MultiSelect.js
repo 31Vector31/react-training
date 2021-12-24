@@ -1,4 +1,3 @@
-import React, {useMemo} from 'react';
 import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -29,23 +28,15 @@ function getStyles(value, selected, theme) {
     };
 }
 
-function MultiSelect({values, onChange, error, validationText}) {
+function MultiSelect({value, options, onChange, error, validationText}) {
     const theme = useTheme();
-
-    const selectedValue = useMemo(() => values.filter(el => {
-        const {isSelected} = el;
-        return isSelected;
-    }).map(el => {
-        const {value} = el;
-        return value;
-    }), [values]);
 
     return (
         <FormControl error={error} sx={{width: 300}}>
             <InputLabel>MultiSelect</InputLabel>
             <Select
                 multiple
-                value={selectedValue}
+                value={value}
                 onChange={onChange}
                 input={<OutlinedInput label="MultiSelect"/>}
                 renderValue={(selected) => (
@@ -57,16 +48,12 @@ function MultiSelect({values, onChange, error, validationText}) {
                 )}
                 MenuProps={MenuProps}
             >
-                {values.map(el => {
-                        const {value} = el;
-                        return (
-                            <MenuItem
-                                key={value}
-                                value={value}
-                                style={getStyles(value, selectedValue, theme)}
-                            >{value}</MenuItem>
-                        );
-                    }
+                {options.map(el =>
+                    <MenuItem
+                        key={el}
+                        value={el}
+                        style={getStyles(el, value, theme)}
+                    >{el}</MenuItem>
                 )}
             </Select>
             <FormHelperText>{validationText.map((text, index) => <p key={index}>{text}</p>)}</FormHelperText>

@@ -1,72 +1,34 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Field from "./Field";
 import MultiSelect from "./MultiSelect";
 import Dropdown from "./Dropdown";
 import styles from "./Container.module.css";
 
-const defaultSelect = [
-    {
-        value: "Один",
-        isSelected: false
-    },
-    {
-        value: "Два",
-        isSelected: false
-    },
-    {
-        value: "Три",
-        isSelected: false
-    }
-];
+const options = ["Один", "Два", "Три"];
 
 function Container() {
 
     const [textField, setTextField] = useState(null);
     const [numericField, setNumericField] = useState(null);
-    const [select, setSelect] = useState(defaultSelect);
-    const [multiSelect, setMultiSelect] = useState(defaultSelect);
+    const [select, setSelect] = useState(null);
+    const [multiSelect, setMultiSelect] = useState(null);
 
-    const onChange = useCallback((state) => event => {
+    const onChange = (state) => event => {
         state(event.target.value);
-    }, []);
+    }
 
-    const onChangeSelect = useCallback(event => {
-        const newSelect = defaultSelect.map((el) => {
-            const {value} = el;
-            if (value === event.target.value) return {value, isSelected: true};
-            return el;
-        })
-        setSelect(newSelect);
-    }, []);
+    const isEmpty = (value) => {
+        if (!value || value.length === 0) return "Выберите значение";
+    }
 
-    const onChangeMultiSelect = useCallback(event => {
-        const newSelect = defaultSelect.map((el) => {
-            const {value} = el;
-            let obj = el;
-            event.target.value.forEach(el => {
-                if (value === el) obj = {value, isSelected: true};
-            });
-            return obj;
-        })
-        setMultiSelect(newSelect);
-    }, []);
-
-    const isEmpty = useCallback((value) => {
-        const selectedValue = value.filter(el => {
-            const {isSelected} = el;
-            return isSelected;
-        });
-        if (!selectedValue.length) return "Выберите значение";
-    }, []);
-
-    const isShort = useCallback((value) => {
+    const isShort = (value) => {
         if (value.length < 3) return "Короткий текст";
-    }, []);
+    }
 
-    const isLong = useCallback((value) => {
+    const isLong = (value) => {
         if (value.length > 10) return "Длинный текст";
-    }, []);
+    }
 
     return (
         <div className={styles.container}>
@@ -106,13 +68,15 @@ function Container() {
 
             <div>
                 <Field
-                    value={select}
-                    onChange={onChangeSelect}
+                    value={select || ""}
+                    options={options}
+                    onChange={onChange(setSelect)}
                     validators={[isEmpty]}
-                    component={({value, onChange, validationText, invalid}) =>
+                    component={({value, options, onChange, validationText, invalid}) =>
                         <Dropdown
                             value={value}
                             error={invalid}
+                            options={options}
                             validationText={validationText}
                             onChange={onChange}
                         />}
@@ -121,13 +85,15 @@ function Container() {
 
             <div>
                 <Field
-                    value={multiSelect}
-                    onChange={onChangeMultiSelect}
+                    value={multiSelect || []}
+                    options={options}
+                    onChange={onChange(setMultiSelect)}
                     validators={[isEmpty]}
-                    component={({value, onChange, validationText, invalid}) =>
+                    component={({value, options, onChange, validationText, invalid}) =>
                         <MultiSelect
                             onChange={onChange}
-                            values={value}
+                            value={value}
+                            options={options}
                             error={invalid}
                             validationText={validationText}
                         />}
