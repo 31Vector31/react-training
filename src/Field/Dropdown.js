@@ -6,9 +6,7 @@ import Select from "@mui/material/Select";
 
 function Dropdown({value, options, onChange, error, validationText}) {
     return (
-        <FormControl
-            error={error}
-            fullWidth>
+        <FormControl error={error}>
             <InputLabel>Выбор</InputLabel>
             <Select
                 value={value}

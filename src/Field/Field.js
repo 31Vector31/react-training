@@ -5,11 +5,10 @@ function Field({value, options, onChange, validators, component}) {
     const [validationText, setValidationText] = useState([]);
 
     useEffect(() => {
-        let validation = [];
-        validators.forEach((validator) => {
+        const validation = validators.reduce((accumulator, validator) => {
             const text = validator(value);
-            if (text) validation.push(text);
-        })
+            return text ? [...accumulator, text] : accumulator;
+        }, []);
         setValidationText(validation);
     }, [value, validators])
 
