@@ -15,25 +15,23 @@ const initialValue = (obj) => {
     return {startPrice, endPrice, brand};
 }
 
-function CatalogFilters({addSearch, searchParams, filters, setFilters}) {
+export const catalogFiltersValidation = (searchParams) => {
+    let validatedParams = {};
+    const {startPrice, endPrice, brand} = initialValue(searchParams);
+
+    if (endPrice && endPrice > minPrice && endPrice < maxPrice && endPrice > startPrice)
+        validatedParams['endPrice'] = endPrice;
+    if (startPrice && startPrice > minPrice && startPrice < maxPrice && startPrice < endPrice)
+        validatedParams['startPrice'] = startPrice;
+    const validatedBrands = brand.filter(el => allBrands.indexOf(el) !== -1)
+    if (validatedBrands.length) validatedParams['brand'] = validatedBrands;
+
+    return validatedParams;
+}
+
+function CatalogFilters({addSearch, filters}) {
     const [price, setPrice] = useState([minPrice, maxPrice]);
     const [brands, setBrands] = useState([]);
-
-    useEffect(() => {
-        setFilters((filters) => {
-            let validatedParams = {};
-            const {startPrice, endPrice, brand} = initialValue(searchParams);
-
-            if (endPrice && endPrice > minPrice && endPrice < maxPrice && endPrice > startPrice)
-                validatedParams['endPrice'] = endPrice;
-            if (startPrice && startPrice > minPrice && startPrice < maxPrice && startPrice < endPrice)
-                validatedParams['startPrice'] = startPrice;
-            const validatedBrands = brand.filter(el => allBrands.indexOf(el) !== -1)
-            if (validatedBrands.length) validatedParams['brand'] = validatedBrands;
-
-            return {...filters, ...validatedParams};
-        });
-    }, []);
 
     useEffect(() => {
         const {startPrice, endPrice, brand} = initialValue(filters);

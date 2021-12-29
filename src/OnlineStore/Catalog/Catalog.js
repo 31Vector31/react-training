@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useMemo} from 'react';
 import {useSearchParams} from "react-router-dom";
-import CatalogFilters from "../CatalogFilters/CatalogFilters";
-import Header from "../Header/Header";
+import CatalogFilters, {catalogFiltersValidation} from "../CatalogFilters/CatalogFilters";
+import Header, {headerValidation} from "../Header/Header";
 import ProductList from "../ProductList/ProductList";
 import styles from "./Catalog.module.css";
 
@@ -18,6 +18,12 @@ const groupParamsByKey = (params) => [...params.entries()].reduce((acc, tuple) =
     }
     return acc;
 }, {});
+
+const initializationFilters = (params, ...validators) => {
+    return validators.reduce((accumulator, validator) => {
+        return {...accumulator, ...validator(params)}
+    }, {});
+}
 
 function Catalog() {
     const [products, setProducts] = useState([
@@ -36,7 +42,8 @@ function Catalog() {
     ]);
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const [filters, setFilters] = useState({});
+    const params = useMemo(() => groupParamsByKey(searchParams), [searchParams]);
+    const [filters, setFilters] = useState(() => initializationFilters(params, catalogFiltersValidation, headerValidation));
 
     const addSearch = useCallback(parameter => {
         const newParameters = {...filters};
@@ -48,22 +55,16 @@ function Catalog() {
         setFilters(newParameters);
     }, [filters]);
 
-    const params = useMemo(() => groupParamsByKey(searchParams), [searchParams]);
-
     return (
         <div className={styles.catalog}>
             <CatalogFilters
                 addSearch={addSearch}
                 filters={filters}
-                setFilters={setFilters}
-                searchParams={params}
             />
             <div className={styles.content}>
                 <Header
                     addSearch={addSearch}
                     filters={filters}
-                    setFilters={setFilters}
-                    searchParams={params}
                 />
                 <ProductList
                     products={products}

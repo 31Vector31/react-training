@@ -19,18 +19,16 @@ const initialValue = (obj) => {
     return {sort, search};
 }
 
-function Header({addSearch, filters, setFilters, searchParams}) {
+export const headerValidation = (searchParams) => {
+    let validatedParams = {};
+    const {sort} = initialValue(searchParams);
+    if (allSort.find((el) => el === sort) !== undefined) validatedParams["sort"] = sort;
+    return validatedParams;
+}
+
+function Header({addSearch, filters}) {
     const [sortState, setSortState] = useState(defaultValueSort);
     const [searchState, setSearchState] = useState(defaultValueSearch);
-
-    useEffect(() => {
-        setFilters((filters) => {
-            let validatedParams = {};
-            const {sort} = initialValue(searchParams);
-            if (allSort.find((el) => el === sort) !== undefined) validatedParams["sort"] = sort;
-            return {...filters, ...validatedParams};
-        });
-    }, []);
 
     useEffect(() => {
         const {sort, search} = initialValue(filters);
