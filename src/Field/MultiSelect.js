@@ -28,11 +28,11 @@ function getStyles(value, selected, theme) {
     };
 }
 
-function MultiSelect({value, options, onChange, error, validationText}) {
+function MultiSelect({value, options, onChange, invalid, validationText}) {
     const theme = useTheme();
 
     return (
-        <FormControl error={error} sx={{width: 300}}>
+        <FormControl error={invalid} sx={{width: 300}}>
             <InputLabel>MultiSelect</InputLabel>
             <Select
                 multiple

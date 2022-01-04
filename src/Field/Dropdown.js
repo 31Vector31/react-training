@@ -4,9 +4,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-function Dropdown({value, options, onChange, error, validationText}) {
+function Dropdown({value, options, onChange, invalid, validationText}) {
     return (
-        <FormControl error={error}>
+        <FormControl error={invalid}>
             <InputLabel>Выбор</InputLabel>
             <Select
                 value={value}
