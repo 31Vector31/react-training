@@ -9,11 +9,12 @@ import PhoneBook from './PhoneBook/PhoneBook/PhoneBook';
 import MovieReviews from './MovieReviews/Router/Reviews';
 import OnlineStore from './OnlineStore/Router';
 import Field from "./Field/Container";
+import PhoneBookRedux from "./PhoneBookRedux";
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <OnlineStore />
+    <PhoneBookRedux />
   </React.StrictMode>,
   document.getElementById('root')
 );
