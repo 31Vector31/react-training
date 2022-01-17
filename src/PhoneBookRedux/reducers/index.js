@@ -4,13 +4,11 @@ import idSelectedContact from "./idSelectedContact";
 import visibilityPopupForm from "./visibilityPopupForm";
 import popupForm from "./popupForm";
 import visibilityPopupConfirm from "./visibilityPopupConfirm";
-import popupFormInvalid from "./popupFormInvalid";
 
 export default combineReducers({
     contacts,
     idSelectedContact,
     visibilityPopupForm,
     visibilityPopupConfirm,
-    popupForm,
-    popupFormInvalid
+    popupForm
 })

@@ -1,30 +1,18 @@
 import {connect} from 'react-redux'
 import {addContact, editContact, setVisibilityPopupForm} from "../actions/main";
 import PopupForm from "../components/PopupForm/PopupForm";
-import {
-    setName, setNameInvalid,
-    setSurname, setSurnameInvalid,
-    setTelephone, setTelephoneInvalid,
-} from "../actions/popupForm";
+import {setName, setSurname, setTelephone} from "../actions/popupForm";
+import {selectedContactSelector} from "../selectors";
 
 const mapStateToProps = state => ({
-    contact: state.contacts.find(contact => contact.id === state.idSelectedContact) || state.popupForm,
+    contact: selectedContactSelector(state) || state.popupForm,
 })
 
 const mapDispatchToProps = dispatch => ({
     hide: () => dispatch(setVisibilityPopupForm(false)),
-    setName: (name) => {
-        dispatch(setName(name));
-        dispatch(setNameInvalid(name));
-    },
-    setSurname: (surname) => {
-        dispatch(setSurname(surname));
-        dispatch(setSurnameInvalid(surname));
-    },
-    setTelephone: (telephone) => {
-        dispatch(setTelephone(telephone));
-        dispatch(setTelephoneInvalid(telephone));
-    },
+    setName: (name) => dispatch(setName(name)),
+    setSurname: (surname) => dispatch(setSurname(surname)),
+    setTelephone: (telephone) => dispatch(setTelephone(telephone)),
     addContact: (contact) => dispatch(addContact(contact)),
     editContact: (contact) => dispatch(editContact(contact)),
 })

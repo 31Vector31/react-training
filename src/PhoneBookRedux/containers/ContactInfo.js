@@ -2,9 +2,10 @@ import {connect} from 'react-redux'
 import ContactInfo from '../components/ContactInfo/ContactInfo'
 import {setIdSelectedContact, setVisibilityPopupForm} from "../actions/main";
 import {setVisibilityPopupConfirm} from "../actions/popupConfirm";
+import {selectedContactSelector} from "../selectors";
 
 const mapStateToProps = state => ({
-    contact: state.contacts.find(contact => contact.id === state.idSelectedContact),
+    contact: selectedContactSelector(state),
     popupConfirm: state.visibilityPopupConfirm
 })
 

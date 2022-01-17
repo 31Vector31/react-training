@@ -23,7 +23,8 @@ export function createContact(contact) {
         }
     };
 
-    axiosInstance.post("/Create", data);
+    return axiosInstance.post("/Create", data)
+        .then(res => res.data.id);
 }
 
 export function readContacts() {
@@ -41,7 +42,8 @@ export function delContact(id) {
         "id": String(id)
     };
 
-    axiosInstance.post("/Delete", data);
+    return axiosInstance.post("/Delete", data)
+        .then(res => res.data);
 }
 
 export function updateContact(contact) {
@@ -56,6 +58,7 @@ export function updateContact(contact) {
         }
     };
 
-    axiosInstance.post("/Update", data);
+    return axiosInstance.post("/Update", data)
+        .then(res => res.data);
 }
 

@@ -7,11 +7,7 @@ import ContactInfo from "../../containers/ContactInfo";
 function PhoneBook({visibilityPopupForm, idSelectedContact, getContacts}) {
 
     useEffect(() => {
-        const body = document.querySelector('body').style;
-        body.maxWidth = "1024px";
-        body.margin = "0 auto";
-        body.height = "100vh";
-        body.position = "relative";
+        document.body.classList.add(styles.bodyClass);
         getContacts();
     }, []);
 

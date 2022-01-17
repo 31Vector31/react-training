@@ -1,29 +1,32 @@
-export const setName = name => ({
-    type: 'SET_NAME',
-    name
-});
+export const setName = name => dispatch => {
+    dispatch({
+        type: 'SET_NAME',
+        name
+    });
+    dispatch({
+        type: 'SET_NAME_INVALID',
+        isNameInvalid: name.length > 10
+    });
+};
 
-export const setSurname = surname => ({
-    type: 'SET_SURNAME',
-    surname
-});
+export const setSurname = surname => dispatch => {
+    dispatch({
+        type: 'SET_SURNAME',
+        surname
+    });
+    dispatch({
+        type: 'SET_SURNAME_INVALID',
+        isSurnameInvalid: surname.length > 20
+    });
+};
 
-export const setTelephone = telephone => ({
-    type: 'SET_TELEPHONE',
-    telephone
-});
-
-export const setNameInvalid = name => ({
-    type: 'SET_NAME_INVALID',
-    name
-});
-
-export const setSurnameInvalid = surname => ({
-    type: 'SET_SURNAME_INVALID',
-    surname
-});
-
-export const setTelephoneInvalid = telephone => ({
-    type: 'SET_TELEPHONE_INVALID',
-    telephone
-});
+export const setTelephone = telephone => dispatch => {
+    dispatch({
+        type: 'SET_TELEPHONE',
+        telephone
+    });
+    dispatch({
+        type: 'SET_TELEPHONE_INVALID',
+        isTelephoneInvalid: !(/^\+\d{12}$/.test(telephone))
+    });
+};

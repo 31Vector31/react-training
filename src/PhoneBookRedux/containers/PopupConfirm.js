@@ -1,19 +1,16 @@
 import {connect} from 'react-redux'
 import PopupConfirm from "../components/PopupConfirm/PopupConfirm";
 import {setVisibilityPopupConfirm} from "../actions/popupConfirm";
-import {deleteContact, setIdSelectedContact} from "../actions/main";
+import {deleteContact} from "../actions/main";
+import {selectedContactSelector} from "../selectors";
 
 const mapStateToProps = state => ({
-    contact: state.contacts.find(contact => contact.id === state.idSelectedContact)
+    contact: selectedContactSelector(state)
 })
 
 const mapDispatchToProps = dispatch => ({
     hide: () => dispatch(setVisibilityPopupConfirm(false)),
-    deleteContact: (id) => {
-        dispatch(setVisibilityPopupConfirm(false));
-        dispatch(setIdSelectedContact(null));
-        dispatch(deleteContact(id));
-    },
+    deleteContact: (id) => dispatch(deleteContact(id)),
 })
 
 export default connect(

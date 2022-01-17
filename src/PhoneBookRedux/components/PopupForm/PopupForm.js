@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import {IconButton, TextField, Button} from '@mui/material';
 import {Clear} from "@mui/icons-material";
 import styles from "./PopupForm.module.css";
+import {popupFormSelector} from "../../selectors";
 
 const defaultValueName = "";
 const defaultValueSurname = "";
@@ -19,10 +20,15 @@ function PopupForm({contact, hide, addContact, editContact, setName, setSurname,
         setTelephone(telephone || defaultValueTelephone);
     }, []);
 
-    const popupForm = useSelector((state) => state.popupForm);
-    const {name: nameForm, surname: surnameForm, telephone: telephoneForm} = popupForm;
-    const popupFormInvalid = useSelector((state) => state.popupFormInvalid);
-    const {isNameInvalid, isSurnameInvalid, isTelephoneInvalid} = popupFormInvalid;
+    const popupForm = useSelector(popupFormSelector);
+    const {
+        name: nameForm,
+        surname: surnameForm,
+        telephone: telephoneForm,
+        isNameInvalid,
+        isSurnameInvalid,
+        isTelephoneInvalid
+    } = popupForm;
 
     const hideClick = () => {
         hide();
