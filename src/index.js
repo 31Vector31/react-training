@@ -10,11 +10,12 @@ import MovieReviews from './MovieReviews/Router/Reviews';
 import OnlineStore from './OnlineStore/Router';
 import Field from "./Field/Container";
 import PhoneBookRedux from "./PhoneBookRedux";
+import MovieReviewsRedux from "./MovieReviewsRedux";
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <PhoneBookRedux />
+    <MovieReviewsRedux />
   </React.StrictMode>,
   document.getElementById('root')
 );
