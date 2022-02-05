@@ -1,9 +1,9 @@
 import {BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom";
 import styles from "./Router.module.css";
-import MoviesList from "../../containers/MoviesList";
-import MovieInfo from "../../containers/MovieInfo";
-import MovieCast from "../../containers/MovieCast";
-import MovieReviews from "../../containers/MovieReviews";
+import MoviesList from "../../components/MoviesList/MoviesList";
+import MovieInfo from "../../components/MovieInfo/MovieInfo";
+import MovieCast from "../../components/MovieCast/MovieCast";
+import MovieReviews from "../../components/MovieReviews/MovieReviews";
 
 function Router() {
     return (

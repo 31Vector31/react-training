@@ -1,11 +1,15 @@
 import React, {useEffect} from 'react';
 import {Grid} from "@mui/material";
 import MovieCard from "../MovieCard/MovieCard";
+import {useDispatch, useSelector} from "react-redux";
+import {getMovies} from "../../actions";
+import {moviesSelector} from "../../selectors";
 
-function MoviesList({movies, getMovies}) {
-
+function MoviesList() {
+    const dispatch = useDispatch();
+    const movies = useSelector(moviesSelector);
     useEffect(() => {
-        getMovies();
+        dispatch(getMovies());
     }, []);
 
     return (

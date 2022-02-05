@@ -1,12 +1,16 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect} from "react";
 import ReviewCard from "../ReviewCard/ReviewCard";
+import {useDispatch, useSelector} from "react-redux";
+import {getMovieReviews} from "../../actions";
+import {movieReviewsSelector} from "../../selectors";
 
-function MovieReviews({reviews, getMovieReviews}) {
+function MovieReviews() {
+    const dispatch = useDispatch();
     const {id} = useParams();
-
+    const reviews = useSelector(movieReviewsSelector);
     useEffect(() => {
-        getMovieReviews(id);
+        dispatch(getMovieReviews(id));
     }, []);
 
     return (

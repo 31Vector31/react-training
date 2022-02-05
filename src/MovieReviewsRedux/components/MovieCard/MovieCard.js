@@ -2,13 +2,12 @@ import styles from "./MovieCard.module.css";
 import {NavLink} from "react-router-dom";
 
 function MovieCard({movie}) {
-    const {id, title, poster_path, release_date} = movie;
-    const baseUrl = "https://image.tmdb.org/t/p/w200";
+    const {id, title, release_date, urlPicture} = movie;
     return (
         <div>
             <NavLink to={`/movies/${id}`}>
                 <div className={styles.card}>
-                    <img src={baseUrl + poster_path} alt=""/>
+                    <img width="200" height="300" src={urlPicture} alt=""/>
                     <div className={styles.info}>
                         <div className={styles.item}>{title}</div>
                         <div className={styles.item}>{release_date}</div>

@@ -6,6 +6,9 @@ import TableCell, {tableCellClasses} from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import styles from "./MovieInfo.module.css";
+import {useDispatch, useSelector} from "react-redux";
+import {getMovieInfo} from "../../actions";
+import {movieInfoSelector} from "../../selectors";
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -26,15 +29,16 @@ const StyledTableRow = styled(TableRow)(({theme}) => ({
     },
 }));
 
-function MovieInfo({movie, getMovieInfo}) {
+function MovieInfo() {
+    const dispatch = useDispatch();
     const {id} = useParams();
-    const baseUrl = "https://image.tmdb.org/t/p/w300";
+    const movie = useSelector(movieInfoSelector);
     useEffect(() => {
-        getMovieInfo(id);
+        dispatch(getMovieInfo(id));
     }, []);
 
     const {
-        poster_path,
+        urlPicture,
         title,
         overview,
         genres,
@@ -51,7 +55,7 @@ function MovieInfo({movie, getMovieInfo}) {
             {movie &&
                 <div>
                     <div className={styles.info}>
-                        <img src={baseUrl + poster_path} alt=""/>
+                        <img width="300" height="450" src={urlPicture} alt=""/>
                         <div>
                             <Table aria-label="customized table">
                                 <TableBody>
