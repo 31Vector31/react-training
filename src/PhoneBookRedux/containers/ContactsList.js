@@ -1,9 +1,10 @@
 import {connect} from 'react-redux'
 import ContactsList from '../components/ContactsList/ContactsList'
-import {setIdSelectedContact, setVisibilityPopupForm} from "../actions/main";
+import {setIdSelectedContact} from "../actions/main";
+import {setVisibilityPopupForm} from "../actions/popupForm";
 
 const mapStateToProps = state => ({
-    contacts: state.contacts
+    contacts: state.contactsReducer.contacts
 })
 
 const mapDispatchToProps = dispatch => ({

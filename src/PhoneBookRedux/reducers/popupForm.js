@@ -1,26 +1,35 @@
-const popupForm = (state = {}, action) => {
+const initialState = {
+    visibilityPopupForm: false,
+    popupForm: {
+        name: {value: null, isInvalid: false},
+        surname: {value: null, isInvalid: false},
+        telephone: {value: null, isInvalid: false},
+    }
+};
+
+const popupFormReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_NAME': {
-            return {...state, name: action.name};
+            const {popupForm} = state;
+            const {name} = action;
+            return {...state, popupForm: {...popupForm, name}};
         }
         case 'SET_SURNAME': {
-            return {...state, surname: action.surname};
+            const {popupForm} = state;
+            const {surname} = action;
+            return {...state, popupForm: {...popupForm, surname}};
         }
         case 'SET_TELEPHONE': {
-            return {...state, telephone: action.telephone};
+            const {popupForm} = state;
+            const {telephone} = action;
+            return {...state, popupForm: {...popupForm, telephone}};
         }
-        case 'SET_NAME_INVALID': {
-            return {...state, isNameInvalid: action.isNameInvalid};
-        }
-        case 'SET_SURNAME_INVALID': {
-            return {...state, isSurnameInvalid: action.isSurnameInvalid};
-        }
-        case 'SET_TELEPHONE_INVALID': {
-            return {...state, isTelephoneInvalid: action.isTelephoneInvalid};
-        }
+        case 'VISIBILITY_POPUP_FORM':
+            const {status} = action;
+            return {...state, visibilityPopupForm: status};
         default:
             return state;
     }
 }
 
-export default popupForm;
+export default popupFormReducer;

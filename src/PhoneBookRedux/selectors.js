@@ -1,2 +1,1 @@
-export const popupFormSelector = state => state.popupForm;
-export const selectedContactSelector = state => state.contacts.find(contact => contact.id === state.idSelectedContact);
+export const selectedContactSelector = state => state.contactsReducer.contacts.find(contact => contact.id === state.contactsReducer.idSelectedContact);

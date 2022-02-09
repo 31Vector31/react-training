@@ -44,8 +44,3 @@ export const setIdSelectedContact = id => ({
     type: 'SELECT_CONTACT',
     id
 });
-
-export const setVisibilityPopupForm = status => ({
-    type: 'VISIBILITY_POPUP_FORM',
-    status
-});

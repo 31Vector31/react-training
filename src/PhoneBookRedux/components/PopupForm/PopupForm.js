@@ -1,18 +1,15 @@
 import React, {useEffect} from 'react';
-import {useSelector} from 'react-redux'
 import ReactDOM from "react-dom";
 import {IconButton, TextField, Button} from '@mui/material';
 import {Clear} from "@mui/icons-material";
 import styles from "./PopupForm.module.css";
-import {popupFormSelector} from "../../selectors";
 
 const defaultValueName = "";
 const defaultValueSurname = "";
 const defaultValueTelephone = "";
 
-function PopupForm({contact, hide, addContact, editContact, setName, setSurname, setTelephone}) {
-
-    const {id, name, surname, telephone} = contact;
+function PopupForm({contact, popupForm, hide, save, setName, setSurname, setTelephone}) {
+    const {id, name, surname, telephone} = contact || {};
 
     useEffect(() => {
         setName(name || defaultValueName);
@@ -20,29 +17,11 @@ function PopupForm({contact, hide, addContact, editContact, setName, setSurname,
         setTelephone(telephone || defaultValueTelephone);
     }, []);
 
-    const popupForm = useSelector(popupFormSelector);
     const {
-        name: nameForm,
-        surname: surnameForm,
-        telephone: telephoneForm,
-        isNameInvalid,
-        isSurnameInvalid,
-        isTelephoneInvalid
+        name: {value: nameForm, isInvalid: isNameInvalid},
+        surname: {value: surnameForm, isInvalid: isSurnameInvalid},
+        telephone: {value: telephoneForm, isInvalid: isTelephoneInvalid},
     } = popupForm;
-
-    const hideClick = () => {
-        hide();
-        setName(defaultValueName);
-        setSurname(defaultValueSurname);
-        setTelephone(defaultValueTelephone);
-    }
-
-    const save = () => {
-        if (isNameInvalid || isSurnameInvalid || isTelephoneInvalid) return;
-        if (id) editContact({...popupForm, id});
-        else addContact(popupForm);
-        hideClick();
-    }
 
     const changeValue = (state) => event => {
         state(event.target.value);
@@ -55,7 +34,7 @@ function PopupForm({contact, hide, addContact, editContact, setName, setSurname,
                     <div className={styles.header}>
                         <h3>{id ? "Редактировать контакт" : "Создать контакт"}</h3>
                         <div>
-                            <IconButton onClick={hideClick}>
+                            <IconButton onClick={hide}>
                                 <Clear/>
                             </IconButton>
                         </div>
@@ -89,7 +68,7 @@ function PopupForm({contact, hide, addContact, editContact, setName, setSurname,
                             label="Номер телефона"
                             variant="outlined"/>
                     </div>
-                    <Button onClick={save} variant="contained" color="success">
+                    <Button onClick={() => save(popupForm, id)} variant="contained" color="success">
                         Сохранить
                     </Button>
                 </div>
