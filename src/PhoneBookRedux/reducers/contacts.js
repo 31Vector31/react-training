@@ -6,38 +6,38 @@ const initialState = {
 const contactsReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'GET_CONTACTS': {
-            const {contacts} = action;
-            return {...state, contacts};
+            const {payload} = action;
+            return {...state, contacts: payload};
         }
         case 'ADD_CONTACT': {
-            const {contact} = action;
+            const {payload} = action;
             const {contacts: stateContacts} = state;
-            return {...state, contacts: [...stateContacts, contact]};
+            return {...state, contacts: [...stateContacts, payload]};
         }
         case 'DEL_CONTACT': {
-            const {id} = action;
+            const {payload} = action;
             const {contacts: stateContacts} = state;
             return {
                 ...state, contacts: stateContacts.filter(contact => {
                     const {id: contactId} = contact;
-                    return contactId !== id;
+                    return contactId !== payload;
                 })
             };
         }
         case 'EDIT_CONTACT': {
-            const {contact} = action;
-            const {id} = contact;
+            const {payload} = action;
+            const {id} = payload;
             const {contacts: stateContacts} = state;
             return {
                 ...state, contacts: stateContacts.map(el => {
                     const {id: elId} = el;
-                    return elId === id ? contact : el;
+                    return elId === id ? payload : el;
                 })
             };
         }
         case 'SELECT_CONTACT': {
-            const {id} = action;
-            return {...state, idSelectedContact: id};
+            const {payload} = action;
+            return {...state, idSelectedContact: payload};
         }
         default:
             return state;

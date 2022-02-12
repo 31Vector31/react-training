@@ -11,22 +11,22 @@ const popupFormReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_NAME': {
             const {popupForm} = state;
-            const {name} = action;
-            return {...state, popupForm: {...popupForm, name}};
+            const {payload} = action;
+            return {...state, popupForm: {...popupForm, name: payload}};
         }
         case 'SET_SURNAME': {
             const {popupForm} = state;
-            const {surname} = action;
-            return {...state, popupForm: {...popupForm, surname}};
+            const {payload} = action;
+            return {...state, popupForm: {...popupForm, surname: payload}};
         }
         case 'SET_TELEPHONE': {
             const {popupForm} = state;
-            const {telephone} = action;
-            return {...state, popupForm: {...popupForm, telephone}};
+            const {payload} = action;
+            return {...state, popupForm: {...popupForm, telephone: payload}};
         }
         case 'VISIBILITY_POPUP_FORM':
-            const {status} = action;
-            return {...state, visibilityPopupForm: status};
+            const {payload} = action;
+            return {...state, visibilityPopupForm: payload};
         default:
             return state;
     }

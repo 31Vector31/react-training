@@ -1,19 +1,27 @@
 import {addContact, editContact} from "./main";
+import {defaultValueName, defaultValueSurname, defaultValueTelephone} from "../components/PopupForm/PopupForm";
 
 export const setName = name => ({
     type: 'SET_NAME',
-    name: {value: name, isInvalid: name.length > 10}
+    payload: {value: name, isInvalid: name.length > 10}
 });
 
 export const setSurname = surname => ({
     type: 'SET_SURNAME',
-    surname: {value: surname, isInvalid: surname.length > 20}
+    payload: {value: surname, isInvalid: surname.length > 20}
 });
 
 export const setTelephone = telephone => ({
     type: 'SET_TELEPHONE',
-    telephone: {value: telephone, isInvalid: !(/^\+\d{12}$/.test(telephone))}
+    payload: {value: telephone, isInvalid: !(/^\+\d{12}$/.test(telephone))}
 });
+
+export const formInitialization = (contact) => dispatch => {
+    const {name, surname, telephone} = contact || {};
+    dispatch(setName(name || defaultValueName));
+    dispatch(setSurname(surname || defaultValueSurname));
+    dispatch(setTelephone(telephone || defaultValueTelephone));
+};
 
 export const hide = () => dispatch => {
     dispatch(setVisibilityPopupForm(false));
@@ -36,5 +44,5 @@ export const save = (popupForm, id) => dispatch => {
 
 export const setVisibilityPopupForm = status => ({
     type: 'VISIBILITY_POPUP_FORM',
-    status
+    payload: status
 });

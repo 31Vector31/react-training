@@ -1,20 +1,19 @@
 import React, {useEffect} from 'react';
 import ReactDOM from "react-dom";
-import {IconButton, TextField, Button} from '@mui/material';
+import {IconButton, Button} from '@mui/material';
 import {Clear} from "@mui/icons-material";
 import styles from "./PopupForm.module.css";
+import InputTextField from "../InputTextField";
 
-const defaultValueName = "";
-const defaultValueSurname = "";
-const defaultValueTelephone = "";
+export const defaultValueName = "";
+export const defaultValueSurname = "";
+export const defaultValueTelephone = "";
 
-function PopupForm({contact, popupForm, hide, save, setName, setSurname, setTelephone}) {
-    const {id, name, surname, telephone} = contact || {};
+function PopupForm({contact, popupForm, hide, save, setName, setSurname, setTelephone, formInitialization}) {
+    const {id} = contact || {};
 
     useEffect(() => {
-        setName(name || defaultValueName);
-        setSurname(surname || defaultValueSurname);
-        setTelephone(telephone || defaultValueTelephone);
+        formInitialization(contact);
     }, []);
 
     const {
@@ -40,33 +39,28 @@ function PopupForm({contact, popupForm, hide, save, setName, setSurname, setTele
                         </div>
                     </div>
                     <div className={styles.item}>
-                        <TextField
-                            error={isNameInvalid}
-                            helperText={isNameInvalid && "Неправильная запись"}
-                            onChange={changeValue(setName)}
+                        <InputTextField
+                            isError={isNameInvalid}
                             value={nameForm || defaultValueName}
                             label="Имя"
-                            variant="outlined"/>
+                            onChange={changeValue(setName)}
+                        />
                     </div>
                     <div className={styles.item}>
-                        <TextField
-                            error={isSurnameInvalid}
-                            helperText={isSurnameInvalid && "Неправильная запись"}
-                            className={styles.item}
-                            onChange={changeValue(setSurname)}
+                        <InputTextField
+                            isError={isSurnameInvalid}
                             value={surnameForm || defaultValueSurname}
                             label="Фамилия"
-                            variant="outlined"/>
+                            onChange={changeValue(setSurname)}
+                        />
                     </div>
                     <div className={styles.item}>
-                        <TextField
-                            error={isTelephoneInvalid}
-                            helperText={isTelephoneInvalid && "Неправильная запись"}
-                            className={styles.item}
-                            onChange={changeValue(setTelephone)}
+                        <InputTextField
+                            isError={isTelephoneInvalid}
                             value={telephoneForm || defaultValueTelephone}
                             label="Номер телефона"
-                            variant="outlined"/>
+                            onChange={changeValue(setTelephone)}
+                        />
                     </div>
                     <Button onClick={() => save(popupForm, id)} variant="contained" color="success">
                         Сохранить
