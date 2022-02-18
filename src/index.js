@@ -11,11 +11,12 @@ import OnlineStore from './OnlineStore/Router';
 import Field from "./Field/Container";
 import PhoneBookRedux from "./PhoneBookRedux";
 import MovieReviewsRedux from "./MovieReviewsRedux";
+import MovieReviewsReselect from "./MovieReviewsReselect";
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <PhoneBookRedux />
+    <MovieReviewsReselect />
   </React.StrictMode>,
   document.getElementById('root')
 );
