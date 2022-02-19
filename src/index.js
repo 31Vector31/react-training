@@ -12,11 +12,12 @@ import Field from "./Field/Container";
 import PhoneBookRedux from "./PhoneBookRedux";
 import MovieReviewsRedux from "./MovieReviewsRedux";
 import MovieReviewsReselect from "./MovieReviewsReselect";
+import PhoneBookReselect from "./PhoneBookReselect";
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <PhoneBookRedux />
+    <PhoneBookReselect />
   </React.StrictMode>,
   document.getElementById('root')
 );
