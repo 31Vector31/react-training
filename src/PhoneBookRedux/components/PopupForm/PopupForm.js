@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import ReactDOM from "react-dom";
 import {IconButton, Button} from '@mui/material';
 import {Clear} from "@mui/icons-material";
@@ -9,12 +9,8 @@ export const defaultValueName = "";
 export const defaultValueSurname = "";
 export const defaultValueTelephone = "";
 
-function PopupForm({contact, popupForm, hide, save, setName, setSurname, setTelephone, formInitialization}) {
+function PopupForm({contact, popupForm, hide, save, setName, setSurname, setTelephone}) {
     const {id} = contact || {};
-
-    useEffect(() => {
-        formInitialization(contact);
-    }, []);
 
     const {
         name: {value: nameForm, isInvalid: isNameInvalid},

@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import PopupForm from "../components/PopupForm/PopupForm";
-import {formInitialization, hide, save, setName, setSurname, setTelephone} from "../actions/popupForm";
+import {hide, save, setName, setSurname, setTelephone} from "../actions/popupForm";
 import {selectedContactSelector} from "../selectors";
 
 const mapStateToProps = state => ({
@@ -14,7 +14,6 @@ const mapDispatchToProps = dispatch => ({
     setName: (name) => dispatch(setName(name)),
     setSurname: (surname) => dispatch(setSurname(surname)),
     setTelephone: (telephone) => dispatch(setTelephone(telephone)),
-    formInitialization: (contact) => dispatch(formInitialization(contact))
 })
 
 export default connect(

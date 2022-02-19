@@ -1,5 +1,6 @@
 import {addContact, editContact} from "./main";
 import {defaultValueName, defaultValueSurname, defaultValueTelephone} from "../components/PopupForm/PopupForm";
+import {selectedContactSelector} from "../selectors";
 
 export const setName = name => ({
     type: 'SET_NAME',
@@ -16,11 +17,9 @@ export const setTelephone = telephone => ({
     payload: {value: telephone, isInvalid: !(/^\+\d{12}$/.test(telephone))}
 });
 
-export const formInitialization = (contact) => dispatch => {
-    const {name, surname, telephone} = contact || {};
-    dispatch(setName(name || defaultValueName));
-    dispatch(setSurname(surname || defaultValueSurname));
-    dispatch(setTelephone(telephone || defaultValueTelephone));
+export const openPopup = () => (dispatch, getState) => {
+    dispatch(setVisibilityPopupForm(true));
+    dispatch(formInitialization(selectedContactSelector(getState())));
 };
 
 export const hide = () => dispatch => {
@@ -42,7 +41,14 @@ export const save = (popupForm, id) => dispatch => {
     dispatch(hide());
 };
 
-export const setVisibilityPopupForm = status => ({
+const formInitialization = (contact) => dispatch => {
+    const {name, surname, telephone} = contact || {};
+    dispatch(setName(name || defaultValueName));
+    dispatch(setSurname(surname || defaultValueSurname));
+    dispatch(setTelephone(telephone || defaultValueTelephone));
+};
+
+const setVisibilityPopupForm = status => ({
     type: 'VISIBILITY_POPUP_FORM',
     payload: status
 });
