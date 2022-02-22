@@ -1,10 +1,11 @@
 import {connect} from 'react-redux'
 import PhoneBook from '../components/PhoneBook/PhoneBook'
 import {getContacts} from "../actions/main";
+import {idSelectedContactSelector, visibilityPopupFormSelector} from "../selectors";
 
 const mapStateToProps = state => ({
-    visibilityPopupForm: state.popupFormReducer.visibilityPopupForm,
-    idSelectedContact: state.contactsReducer.idSelectedContact
+    visibilityPopupForm: visibilityPopupFormSelector(state),
+    idSelectedContact: idSelectedContactSelector(state)
 })
 
 const mapDispatchToProps = dispatch => ({

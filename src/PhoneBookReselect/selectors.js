@@ -1,6 +1,8 @@
 import {createSelector} from "reselect";
 
-const idSelectedContact = state => state.contactsReducer.idSelectedContact;
-const contacts = state => state.contactsReducer.contacts;
-
-export const selectedContactSelector = createSelector(contacts, idSelectedContact, (contacts, idSelectedContact) => contacts.find(contact => contact.id === idSelectedContact));
+export const idSelectedContactSelector = state => state.contactsReducer.idSelectedContact;
+export const contactsSelector = state => state.contactsReducer.contacts;
+export const selectedContactSelector = createSelector(contactsSelector, idSelectedContactSelector, (contacts, idSelectedContact) => contacts.find(contact => contact.id === idSelectedContact));
+export const visibilityPopupConfirmSelector = state => state.visibilityPopupConfirm;
+export const visibilityPopupFormSelector = state => state.popupFormReducer.visibilityPopupForm;
+export const popupFormSelector = state => state.popupFormReducer.popupForm;

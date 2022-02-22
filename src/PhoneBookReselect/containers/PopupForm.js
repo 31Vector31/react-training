@@ -1,11 +1,11 @@
 import {connect} from 'react-redux'
 import PopupForm from "../components/PopupForm/PopupForm";
 import {hide, save, setName, setSurname, setTelephone} from "../actions/popupForm";
-import {selectedContactSelector} from "../selectors";
+import {popupFormSelector, selectedContactSelector} from "../selectors";
 
 const mapStateToProps = state => ({
     contact: selectedContactSelector(state),
-    popupForm: state.popupFormReducer.popupForm
+    popupForm: popupFormSelector(state)
 })
 
 const mapDispatchToProps = dispatch => ({
