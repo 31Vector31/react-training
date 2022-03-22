@@ -1,0 +1,53 @@
+{
+  "en": {
+    "language": "Language",
+    "title": "News",
+    "category": "Category",
+    "paginationButton": "Next",
+    "business": "Business",
+    "entertainment": "Entertainment",
+    "environment": "Environment",
+    "food": "Food",
+    "health": "Health",
+    "politics": "Politics",
+    "science": "Science",
+    "sports": "Sports",
+    "technology": "Technology",
+    "top": "Top",
+    "world": "World"
+  },
+  "fr": {
+    "language": "Langue",
+    "title": "Nouvelles",
+    "category": "Catégorie",
+    "paginationButton": "Suivante",
+    "business": "Affaires",
+    "entertainment": "Divertissement",
+    "environment": "Environnement",
+    "food": "Aliments",
+    "health": "Santé",
+    "politics": "Politique",
+    "science": "La science",
+    "sports": "Des sports",
+    "technology": "La technologie",
+    "top": "Haut",
+    "world": "Monde"
+  },
+  "de": {
+    "language": "Sprache",
+    "title": "Nachrichten",
+    "category": "Kategorie",
+    "paginationButton": "Nächste",
+    "business": "Unternehmen",
+    "entertainment": "Unterhaltung",
+    "environment": "Umfeld",
+    "food": "Lebensmittel",
+    "health": "Die Gesundheit",
+    "politics": "Politik",
+    "science": "Wissenschaft",
+    "sports": "Sport",
+    "technology": "Technologie",
+    "top": "oben",
+    "world": "Welt"
+  }
+}

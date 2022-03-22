@@ -13,11 +13,12 @@ import PhoneBookRedux from "./PhoneBookRedux";
 import MovieReviewsRedux from "./MovieReviewsRedux";
 import MovieReviewsReselect from "./MovieReviewsReselect";
 import PhoneBookReselect from "./PhoneBookReselect";
+import News from "./News/Main/Main";
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <PhoneBookReselect />
+    <News />
   </React.StrictMode>,
   document.getElementById('root')
 );
