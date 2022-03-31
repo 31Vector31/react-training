@@ -7,13 +7,14 @@ function NewsList({news, nextPage}) {
     return (
         <div>
             {news.map((news, index) => <NewsCard news={news} key={index}/>)}
-            <Box textAlign='center'>
-                <Button
-                    variant="contained"
-                    onClick={nextPage}>
-                    <TextWrapper languageKey="paginationButton"/>
-                </Button>
-            </Box>
+            {news.length !== 0 &&
+                <Box textAlign='center'>
+                    <Button
+                        variant="contained"
+                        onClick={nextPage}>
+                        <TextWrapper languageKey="paginationButton"/>
+                    </Button>
+                </Box>}
         </div>
     );
 }

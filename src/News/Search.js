@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -8,6 +8,10 @@ import Paper from "@mui/material/Paper";
 export default function Search({value, handleChange}) {
 
     const [search, setSearch] = useState(value);
+
+    useEffect(() => {
+        setSearch(value);
+    }, [value])
 
     return (
         <Paper

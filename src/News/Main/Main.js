@@ -25,7 +25,9 @@ function Main() {
     const getNews = () => {
         const {category, search, page} = parameters;
         getNewsAPIRequests(language, validation(category.join()), page, validation(search)).then(news => {
-            setNews(news.results);
+            setNews(prevNews => {
+                return [...prevNews, ...news.results];
+            });
         });
     }
 
@@ -36,10 +38,12 @@ function Main() {
     const changeLanguage = useCallback((lang) => {
         setLanguage(lang);
         setParameters(defaultParameters);
+        setNews([]);
     }, []);
 
     const setFilters = useCallback((filter) => {
         setParameters({...filter, page: defaultPage});
+        setNews([]);
     }, []);
 
     const nextPage = useCallback(() => {
